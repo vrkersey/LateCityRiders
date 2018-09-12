@@ -45,7 +45,7 @@ public class playerController : MonoBehaviour {
 			horizontalVelocity.y = 0;
 			
 			Vector3 newVelocity = Vector3.Lerp(horizontalVelocity, Vector3.zero, drag);
-			Debug.Log(newVelocity);
+			//Debug.Log(newVelocity);
 			newVelocity.y = vertVelocity;
 			
 			rb.velocity = newVelocity;
