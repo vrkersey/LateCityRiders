@@ -8,10 +8,14 @@ public class Driving_Controls : MonoBehaviour
     public float currentspeed, acceleration, topspeed, bottomspeed;
     public Rigidbody rb;
 
+    private bool playerInCar = false;
+    public bool PlayerInCar { get { return playerInCar; } set { playerInCar = value; }}
+
 	// Update is called once per frame
 	void Update()
     {   
-        KeyPress();
+        if (playerInCar)
+            KeyPress();
       //  transform.Translate(currentspeed, 0, 0);
 	}
     private void KeyPress()
@@ -19,7 +23,7 @@ public class Driving_Controls : MonoBehaviour
         //Forward acceleration
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) 
         {
-            rb.AddForce(transform.forward * acceleration);
+            rb.AddForce(-transform.forward * acceleration);
             //if (currentspeed <= topspeed)
             //    currentspeed = currentspeed + iteration;
             //if (currentspeed > topspeed)
@@ -29,7 +33,7 @@ public class Driving_Controls : MonoBehaviour
         //Reverse/slowing down
         if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) 
         {
-            rb.AddForce(-transform.forward * acceleration);
+            rb.AddForce(transform.forward * acceleration);
             //if(currentspeed >= bottomspeed)
             //{
             //    currentspeed = currentspeed - iteration;
