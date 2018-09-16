@@ -16,11 +16,14 @@ public class playerController : MonoBehaviour {
 	public float maxControl = 15;
 	public float jumpMultiplier = 15;
     public float exitSpeedVelocity = .5f;
+    public IPlayer thePlayer;
+
 	// Use this for initialization
 	void Start () {
 		player = transform;
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         rb = player.GetComponent<Rigidbody>();
+        thePlayer = GetComponent<IPlayer>();
     }
 	
 	// Update is called once per frame
@@ -30,46 +33,22 @@ public class playerController : MonoBehaviour {
 
 	private void Keyboard_Input()
 	{
-		Vector3 forward = (player.position - mainCamera.position);
-		forward.y = 0;
-		forward = forward.normalized;
-		Vector3 left = Vector3.Cross(forward, Vector3.up);
-		
-		if (!grounded)
-		{
-            // adds control the longer the player is in the air
-			control = Mathf.Lerp(control, maxControl, .025f);
-		}
-
-		if (Input.GetKey(KeyCode.A) && !inCar)
-		{
-			rb.AddForce(left * control);
-		}
-        if (Input.GetKey(KeyCode.D) && !inCar)
-		{
-			rb.AddForce(-left * control);
-		}
         if (Input.GetKey(KeyCode.W) && !inCar)
         {
-            rb.AddForce(forward * control);
+            thePlayer.moveForward(rb, 1);
         }
         if (Input.GetKey(KeyCode.S) && !inCar)
         {
-            rb.AddForce(-forward * control);
+            thePlayer.moveForward(rb, -1);
         }
-        /*else
+        if (Input.GetKey(KeyCode.D) && !inCar)
         {
-            //reduce speed
-            Vector3 horizontalVelocity = rb.velocity;
-
-            float vertVelocity = horizontalVelocity.y;
-            horizontalVelocity.y = 0;
-
-            Vector3 newVelocity = Vector3.Lerp(horizontalVelocity, Vector3.zero, drag);
-            newVelocity.y = vertVelocity;
-
-            //rb.velocity = newVelocity;
-        }*/
+            thePlayer.moveRight(rb, 1);
+        }
+        if (Input.GetKey(KeyCode.A) && !inCar)
+        {
+            thePlayer.moveRight(rb, -1);
+		}
 
 		if (Input.GetKey(KeyCode.Space) && grounded)
 		{
