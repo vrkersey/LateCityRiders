@@ -8,7 +8,7 @@ public interface IPlayer {
 
     void moveRight(Rigidbody rb, float valaue);
 
-    void exitVehicle(Rigidbody rb);
+    void exitVehicle(Rigidbody rb, GameObject car);
 
     void useSpecial(Rigidbody rb);
 
