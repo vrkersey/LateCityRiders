@@ -12,10 +12,10 @@ public class playerController : MonoBehaviour {
     bool inCar = false;
     GameObject car;
 
-    public float drag = .05f;
-	public float maxControl = 15;
-	public float jumpMultiplier = 15;
-    public float exitSpeedVelocity = .5f;
+    //public float drag = .05f; - to be deleted
+	//public float maxControl = 15;
+	//public float jumpMultiplier = 15;
+    //public float exitSpeedVelocity = .5f;
     public IPlayer thePlayer;
 
 	// Use this for initialization
@@ -50,20 +50,24 @@ public class playerController : MonoBehaviour {
             thePlayer.moveRight(rb, -1);
 		}
 
-		if (Input.GetKey(KeyCode.Space) && grounded)
-		{
-            
+        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        {
             player.parent = null;
             if (rb == null)
             {
                 rb = gameObject.AddComponent<Rigidbody>();
-                rb.velocity = car.GetComponent<Rigidbody>().velocity * exitSpeedVelocity;
+                //rb.velocity = car.GetComponent<Rigidbody>().velocity * exitSpeedVelocity;
             }
-            else
-            {
-                rb.AddForce(Vector3.up * jumpMultiplier, ForceMode.Impulse);
-            }
-			grounded = false;
+            //else
+            //{
+            //rb.AddForce(Vector3.up * jumpMultiplier, ForceMode.Impulse);
+            //}
+            thePlayer.exitVehicle(rb, car);
+            grounded = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && !grounded)
+        {
+            thePlayer.useSpecial(rb);
         }
 	}
 
