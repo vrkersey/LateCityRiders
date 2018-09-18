@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Driving_Direct : MonoBehaviour
 {
-    public float acceleration, speed, slowDown;
+    public float acceleration, speed, slowDown, maxSpeed, turnSpeed;
     private Vector3 temp;
-    bool grounded;
+    public bool grounded;
     private bool playerInCar = false;
     public bool PlayerInCar { get { return playerInCar; } set { playerInCar = value; } }
 
@@ -15,6 +15,10 @@ public class Driving_Direct : MonoBehaviour
         speed = 0;
         acceleration = 0.3f;
         slowDown = 0.2f;
+        maxSpeed = 60f;
+        turnSpeed = 0.5f;
+        grounded = false;
+
     }
 
     // Update is called once per frame
@@ -29,18 +33,27 @@ public class Driving_Direct : MonoBehaviour
 
     void KeyPress()
     {
-        //Speeds up the vehicle manually. 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if (grounded == true)
         {
-            speed += acceleration;
-        }
+            //Speeds up the vehicle manually. 
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            {
+                speed += acceleration;
+                if (speed > maxSpeed)
+                    speed = maxSpeed;
+            }
 
-       // Slows down the vehicle manually. Acts as a reverse as well.
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-        {
+            // Slows down the vehicle manually. Acts as a reverse as well.
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            {
+                if (speed > 0)
+                    speed -= 2 * acceleration;
+                else
+                    speed -= acceleration;
+                if (speed < -maxSpeed)
+                    speed = -maxSpeed;
 
-            speed -= acceleration;
-
+            }
         }
 
         //Rotate left. Attempted to rotate around back of vehicle.
@@ -48,7 +61,7 @@ public class Driving_Direct : MonoBehaviour
         {
             temp = transform.position;
             temp.x += 5f;
-            transform.RotateAround(temp,transform.up,-0.3F);
+            transform.RotateAround(temp, transform.up, -turnSpeed);
         }
 
         //Rotate Right. Attempted to rotate around back of vehicle.
@@ -56,11 +69,10 @@ public class Driving_Direct : MonoBehaviour
         {
             temp = transform.position;
             temp.x += 5f;
-            transform.RotateAround(temp, transform.up, 0.3f);
+            transform.RotateAround(temp, transform.up, turnSpeed);
         }
-
         //Slows down forward moving vehicle. Sets slowed down car to 0 if necessary.
-        if(speed > 0 && !Input.anyKey)
+        if (speed > 0 && !Input.anyKey)
         {
             speed -= slowDown;
             if (speed < 0)
@@ -68,11 +80,26 @@ public class Driving_Direct : MonoBehaviour
         }
 
         //Slows down reversing vehicle. Sets slowed down car to 0 if necessary.
-        if(speed < 0 && !Input.anyKey)
+        if (speed < 0 && !Input.anyKey)
         {
             speed += slowDown;
             if (speed > 0)
                 speed = 0;
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Road"))
+        {
+            grounded = true;
+        }
+    }
+    void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.CompareTag("Road"))
+        {
+            grounded = false;
         }
     }
 }
