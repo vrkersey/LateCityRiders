@@ -24,6 +24,7 @@ public class Driving_Direct : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(PlayerInCar)
             KeyPress();
         //Fix this TODO:
         transform.position += -transform.forward * speed * Time.deltaTime;
@@ -75,18 +76,20 @@ public class Driving_Direct : MonoBehaviour
 
         //The following do not rely on being grounded. These control car direction.
         //Rotate left. Attempted to rotate around back of vehicle.
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) && speed != 0)
         {
             temp = transform.position;
             temp.x += 5f;
+            //temp.z += 5f;
             transform.RotateAround(temp, transform.up, -turnSpeed);
         }
 
         //Rotate Right. Attempted to rotate around back of vehicle.
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) && speed != 0)
         {
             temp = transform.position;
             temp.x += 5f;
+            //temp.z -= 5f;
             transform.RotateAround(temp, transform.up, turnSpeed);
         }
     }
