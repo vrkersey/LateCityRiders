@@ -6,7 +6,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     private Transform cTransform;
 
-    float characterAcceleration = 10f;
+    float characterAcceleration = 20f;
     float maxSpeedThisJump;
 
     int SpecialsLeft = 0;
@@ -82,7 +82,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         {
             Debug.Log("use special");
             SpecialsLeft -= 1;
-            rb.velocity = new Vector3(rb.velocity.x/2, 10f, rb.velocity.z/2);
+            rb.velocity = new Vector3(0 * rb.velocity.x/2, 10f, 0 * rb.velocity.z/2);
+            maxSpeedThisJump *= .5f;
         }
     }
 

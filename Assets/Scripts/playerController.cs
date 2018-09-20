@@ -37,18 +37,27 @@ public class playerController : MonoBehaviour {
         {
             thePlayer.moveForward(rb, 1);
         }
-        if (Input.GetKey(KeyCode.S) && !inCar)
+        else if (Input.GetKey(KeyCode.S) && !inCar)
         {
             thePlayer.moveForward(rb, -1);
         }
+        else
+        {
+            thePlayer.moveForward(rb, 0);
+        }
+
         if (Input.GetKey(KeyCode.D) && !inCar)
         {
             thePlayer.moveRight(rb, 1);
         }
-        if (Input.GetKey(KeyCode.A) && !inCar)
+        else if (Input.GetKey(KeyCode.A) && !inCar)
         {
             thePlayer.moveRight(rb, -1);
 		}
+        else
+        {
+            thePlayer.moveRight(rb, 0);
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
