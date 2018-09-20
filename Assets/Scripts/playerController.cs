@@ -98,11 +98,20 @@ public class playerController : MonoBehaviour {
             car = other.gameObject;
             GetComponent<MeshRenderer>().enabled = false;
             other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = true;
+
+            //NEW: Adds a slight increase of initial speed when entering vehicles.
+            other.gameObject.GetComponent<Driving_Controls>().speed = 15f;
             inCar = true;
             Destroy(player.GetComponent<Rigidbody>());
             player.parent = other.transform;
         }
         if (other.gameObject.CompareTag("Kill Zone"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        //NEW: Ends the level with a success. For prototype it simply restarts stage.
+        if (other.gameObject.CompareTag("Goal"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -115,6 +124,9 @@ public class playerController : MonoBehaviour {
         {
             GetComponent<MeshRenderer>().enabled = true;
             other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = false;
+
+            //NEW: Slows down cars to avoid crash.
+            other.gameObject.GetComponent<Driving_Controls>().speed = 5f;
 
             inCar = false;
         }
