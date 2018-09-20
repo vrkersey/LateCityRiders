@@ -101,6 +101,14 @@ public class playerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Kill Zone"))
         {
+            Debug.Log("kill");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        //NEW: Ends the level with a success. For prototype it simply restarts stage.
+        if (other.gameObject.CompareTag("Goal"))
+        {
+            Debug.Log("goal");
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
@@ -125,16 +133,18 @@ public class playerController : MonoBehaviour
             player.parent = other.transform;
             car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
         }
-        if (other.gameObject.CompareTag("Kill Zone"))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        //if (other.gameObject.CompareTag("Kill Zone"))
+        //{
+        //    Debug.Log("kill");
+        //    //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //}
 
-        //NEW: Ends the level with a success. For prototype it simply restarts stage.
-        if (other.gameObject.CompareTag("Goal"))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        ////NEW: Ends the level with a success. For prototype it simply restarts stage.
+        //if (other.gameObject.CompareTag("Goal"))
+        //{
+        //    Debug.Log("goal");
+        //    //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //}
     }
 }
 

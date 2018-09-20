@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class basicCameraScript : MonoBehaviour {
-	Transform player;
-	Transform mainCamera;
+	public Transform player;
+	public Transform mainCamera;
 	public Vector3 angle = new Vector3(0, -3f, 10);
 
 	// Use this for initialization
