@@ -26,8 +26,25 @@ public class Driving_Controls : MonoBehaviour
     {
         if (PlayerInCar)
             KeyPress();
-        //Fix this TODO:
-        transform.position += -transform.forward * speed * Time.deltaTime;
+
+        //ideally this will be done with a box cast(s) in the future
+        grounded = false;
+        if (Physics.Raycast(transform.position, -transform.up, 5f))
+        {
+            grounded = true;
+        }
+
+        //set velocity to speed
+        if (grounded)
+        {
+            transform.GetComponent<Rigidbody>().velocity = new Vector3(-speed * transform.forward.x, transform.GetComponent<Rigidbody>().velocity.y, -speed * transform.forward.z);
+        }
+        else
+        {
+            //leave it to physics in the air
+            speed = new Vector3(transform.GetComponent<Rigidbody>().velocity.x, 0, transform.GetComponent<Rigidbody>().velocity.z).magnitude;
+        }
+        
     }
 
     void KeyPress()
@@ -95,17 +112,17 @@ public class Driving_Controls : MonoBehaviour
         }
     }
 
-    //On collison enter may not be necessary... TODO
-    //When driver lands on ground, regain acceleration based control.
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Kill Zone"))
-        {
-            grounded = true;
-        }
-    }
+    ////On collison enter may not be necessary... TODO
+    ////When driver lands on ground, regain acceleration based control.
+    //void OnCollisionEnter(Collision other)
+    //{
+    //    if (other.gameObject.CompareTag("Kill Zone"))
+    //    {
+    //        grounded = true;
+    //    }
+    //}
 
-    //this seems redundant if we have oncollisionenter and oncollisionexit
+    ////this seems redundant if we have oncollisionenter and oncollisionexit
     ////When driver is currently on ground, maintain acceleration control. 
     //void OnCollisionStay(Collision other)
     //{
@@ -118,14 +135,14 @@ public class Driving_Controls : MonoBehaviour
     //    }
     //}
 
-    //When driver detatches from ground, remove driver's ability to accelerate.
-    void OnCollisionExit(Collision other)
-    {
-        if (other.gameObject.CompareTag("Kill Zone"))
-        {
-            grounded = false;
-        }
-    }
+    ////When driver detatches from ground, remove driver's ability to accelerate.
+    //void OnCollisionExit(Collision other)
+    //{
+    //    if (other.gameObject.CompareTag("Kill Zone"))
+    //    {
+    //        grounded = false;
+    //    }
+    //}
 }
 
 
