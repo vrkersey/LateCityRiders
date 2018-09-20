@@ -6,8 +6,12 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     private Transform cTransform;
 
+    //characters
     public enum Character {BusinessMan = 0, Karate};
     public Character CharacterSelect;
+
+    //character variables
+    float timeInAir = -1;
 
     float characterAcceleration = 20f;
     float maxSpeedThisJump;
@@ -28,6 +32,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     void Update()
     {
+        //Debug.Log("maxspeedthisjump" + maxSpeedThisJump);
         if (currentRB)
         {
             //Debug.Log(currentRB.velocity.magnitude);
@@ -44,6 +49,11 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 HorVelocityCheck *= maxSpeedThisJump;
                 currentRB.velocity = new Vector3(HorVelocityCheck.x, saveY, HorVelocityCheck.z);
             }
+        }
+
+        if (timeInAir > -1)
+        {
+            timeInAir += Time.deltaTime;
         }
     }
 
@@ -69,8 +79,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         //Rigidbody carRB = car.GetComponent<Rigidbody>();
         Driving_Controls CarControl = car.GetComponent<Driving_Controls>();
         float CarSpeed = Mathf.Abs(CarControl.speed);
-        maxSpeedThisJump = CarSpeed;
         float SpeedBoost = (CarSpeed / (CarControl.maxSpeed * 0.8f));
+        maxSpeedThisJump = Mathf.Max( CarSpeed * SpeedBoost, 3f);
         //float CarDirection = CarSpeed / CarControl.speed;
 
 
@@ -82,6 +92,9 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
         //reset ammo
         SpecialsLeft = CharacterSpecialAmmo;
+
+        //reset specials
+        timeInAir = -1;
     }
 
     public void useSpecial(Rigidbody rb){
@@ -91,7 +104,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             {
                 Debug.Log("use double jump");
                 SpecialsLeft -= 1;
-                rb.velocity = new Vector3(0 * rb.velocity.x / 2, 10f, 0 * rb.velocity.z / 2);
+                rb.velocity = new Vector3(1 * rb.velocity.x / 2, 10f, 1 * rb.velocity.z / 2);
                 maxSpeedThisJump *= .5f;
             }
         }
@@ -101,8 +114,12 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             {
                 Debug.Log("use divekick");
                 SpecialsLeft -= 1;
-                rb.velocity = new Vector3(0 * rb.velocity.x / 2, -20f, 0 * rb.velocity.z / 2);
+                Vector3 dir = GetHorVelocityCheck().normalized;
+                rb.velocity = new Vector3(0 * rb.velocity.x / 2, -50f, 0 * rb.velocity.z / 2);
+                rb.velocity += dir * 5f;
                 maxSpeedThisJump *= .5f;
+
+                timeInAir = 1f;
             }
         }
 
@@ -117,6 +134,12 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     public Vector3 GetHorVelocityCheck()
     {
+        if(CharacterSelect == Character.Karate && SpecialsLeft == 0)
+        {
+
+            Debug.Log("timeinair " + timeInAir);
+            return HorVelocityCheck * 5;// * timeInAir;
+        }
         return HorVelocityCheck;
     }
 }
