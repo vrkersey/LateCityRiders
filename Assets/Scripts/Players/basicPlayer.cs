@@ -64,16 +64,19 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         currentRB = rb;
         //Rigidbody carRB = car.GetComponent<Rigidbody>();
         Driving_Controls CarControl = car.GetComponent<Driving_Controls>();
-        float CarSpeed = CarControl.speed;
+        float CarSpeed = Mathf.Abs(CarControl.speed);
         maxSpeedThisJump = CarSpeed;
-        float SpeedBoost = (CarControl.speed / (CarControl.maxSpeed * 0.8f));
+        float SpeedBoost = (CarSpeed / (CarControl.maxSpeed * 0.8f));
+        //float CarDirection = CarSpeed / CarControl.speed;
 
 
         //add jump
-        Debug.Log(((CarSpeed / 4) * SpeedBoost) + 5000f);
         rb.velocity = new Vector3(0f, ((CarSpeed / 4 ) * SpeedBoost) + 5, 0f);
+
         //add velocity
-        rb.velocity -= car.transform.forward * CarSpeed * SpeedBoost;
+        rb.velocity += new Vector3(car.transform.GetComponent<Rigidbody>().velocity.x, 0, car.transform.GetComponent<Rigidbody>().velocity.z) * CarSpeed * SpeedBoost;
+
+        //reset ammo
         SpecialsLeft = CharacterSpecialAmmo;
     }
 
