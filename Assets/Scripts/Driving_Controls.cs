@@ -35,7 +35,7 @@ public class Driving_Controls : MonoBehaviour
         }
 
         //set velocity to speed
-        if (grounded)
+        if (grounded && playerInCar)
         {
             transform.GetComponent<Rigidbody>().velocity = new Vector3(-speed * transform.forward.x, transform.GetComponent<Rigidbody>().velocity.y, -speed * transform.forward.z);
         }
@@ -97,7 +97,7 @@ public class Driving_Controls : MonoBehaviour
         if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) && speed != 0)
         {
             temp = transform.position;
-            temp.x -= 5f;
+            temp.x += 3f;
             //temp.z += 5f;
             transform.RotateAround(temp, transform.up, -turnSpeed);
         }
@@ -106,10 +106,11 @@ public class Driving_Controls : MonoBehaviour
         if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) && speed != 0)
         {
             temp = transform.position;
-            temp.x -= 5f;
+            temp.x += 3f;
             //temp.z -= 5f;
             transform.RotateAround(temp, transform.up, turnSpeed);
         }
+
     }
 
     ////On collison enter may not be necessary... TODO

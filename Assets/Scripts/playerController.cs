@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class playerController : MonoBehaviour {
-	Transform player;
-	Transform mainCamera;
-	bool grounded = true;
-	float control = 0;
+public class playerController : MonoBehaviour
+{
+    Transform player;
+    Transform mainCamera;
+    bool grounded = true;
+    float control = 0;
     Rigidbody rb;
     bool inCar = false;
     GameObject car;
@@ -16,27 +17,29 @@ public class playerController : MonoBehaviour {
     float nextCarTimer;
 
     //public float drag = .05f; - to be deleted
-	//public float maxControl = 15;
-	//public float jumpMultiplier = 15;
+    //public float maxControl = 15;
+    //public float jumpMultiplier = 15;
     //public float exitSpeedVelocity = .5f;
     public IPlayer thePlayer;
 
-	// Use this for initialization
-	void Start () {
-		player = transform;
-		mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+    // Use this for initialization
+    void Start()
+    {
+        player = transform;
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         rb = player.GetComponent<Rigidbody>();
         thePlayer = GetComponent<IPlayer>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		Keyboard_Input();
-        nextCarTimer -= Time.deltaTime;
-	}
 
-	private void Keyboard_Input()
-	{
+    // Update is called once per frame
+    void Update()
+    {
+        Keyboard_Input();
+        nextCarTimer -= Time.deltaTime;
+    }
+
+    private void Keyboard_Input()
+    {
         if (Input.GetKey(KeyCode.W) && !inCar)
         {
             thePlayer.moveForward(rb, 1);
@@ -57,7 +60,7 @@ public class playerController : MonoBehaviour {
         else if (Input.GetKey(KeyCode.A) && !inCar)
         {
             thePlayer.moveRight(rb, -1);
-		}
+        }
         else
         {
             thePlayer.moveRight(rb, 0);
@@ -92,10 +95,10 @@ public class playerController : MonoBehaviour {
             thePlayer.useSpecial(rb);
             nextCarTimer = 0;
         }
-	}
+    }
 
-	void OnCollisionEnter(Collision other)
-	{
+    void OnCollisionEnter(Collision other)
+    {
         if (other.gameObject.CompareTag("Kill Zone"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -104,15 +107,18 @@ public class playerController : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        
-        
-        if (other.gameObject.CompareTag("Car") && !inCar && nextCarTimer <=0f)
+
+
+        if (other.gameObject.CompareTag("Car") && !inCar && nextCarTimer <= 0f)
         {
             grounded = true;
             control = 0;
             car = other.gameObject;
             GetComponent<MeshRenderer>().enabled = false;
             other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = true;
+
+            //NEW: Adds a slight increase of initial speed when entering vehicles.
+            //other.gameObject.GetComponent<Driving_Controls>().speed = 15f;
             inCar = true;
             Destroy(player.GetComponent<Rigidbody>());
             player.position = car.transform.position + (car.transform.up * 2) + (car.transform.forward * -1);
@@ -123,7 +129,14 @@ public class playerController : MonoBehaviour {
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        //NEW: Ends the level with a success. For prototype it simply restarts stage.
+        if (other.gameObject.CompareTag("Goal"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
+}
 
  //   void OnTriggerExit(Collider other)
 	//{
@@ -133,7 +146,16 @@ public class playerController : MonoBehaviour {
  //           GetComponent<MeshRenderer>().enabled = true;
  //           other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = false;
 
+//<<<<<<< HEAD
  //           inCar = false;
  //       }
  //   }
-}
+//=======
+            //NEW: Slows down cars to avoid crash.
+            //other.gameObject.GetComponent<Driving_Controls>().speed = 5f;
+
+           // inCar = false;
+        //}
+    //}
+//>>>>>>> ed57bfea656f6215d3a1cb3cef0bee3824eb1a03
+//}
