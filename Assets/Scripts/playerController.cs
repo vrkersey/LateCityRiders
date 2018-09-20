@@ -62,6 +62,7 @@ public class playerController : MonoBehaviour {
             //{
             //rb.AddForce(Vector3.up * jumpMultiplier, ForceMode.Impulse);
             //}
+
             thePlayer.exitVehicle(rb, car);
             grounded = false;
         }

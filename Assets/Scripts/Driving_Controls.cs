@@ -38,6 +38,7 @@ public class Driving_Controls : MonoBehaviour
             //Speeds up the vehicle manually. 
             if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && (!Input.GetKey(KeyCode.S) || !Input.GetKey(KeyCode.DownArrow)))
             {
+                //Debug.Log("Forward");
                 if (speed < 0)
                     speed += 2 * acceleration;
                 else
@@ -98,28 +99,29 @@ public class Driving_Controls : MonoBehaviour
     //When driver lands on ground, regain acceleration based control.
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Road"))
+        if (other.gameObject.CompareTag("Kill Zone"))
         {
             grounded = true;
         }
     }
 
-    //When driver is currently on ground, maintain acceleration control.
-    void OnCollisionStay(Collision other)
-    {
-        foreach (ContactPoint contact in other.contacts)
-        {
-            if (other.gameObject.CompareTag("Road"))
-            {
-                grounded = true;
-            }
-        }
-    }
+    //this seems redundant if we have oncollisionenter and oncollisionexit
+    ////When driver is currently on ground, maintain acceleration control. 
+    //void OnCollisionStay(Collision other)
+    //{
+    //    foreach (ContactPoint contact in other.contacts)
+    //    {
+    //        if (other.gameObject.CompareTag("Road"))
+    //        {
+    //            grounded = true;
+    //        }
+    //    }
+    //}
 
     //When driver detatches from ground, remove driver's ability to accelerate.
     void OnCollisionExit(Collision other)
     {
-        if (other.gameObject.CompareTag("Road"))
+        if (other.gameObject.CompareTag("Kill Zone"))
         {
             grounded = false;
         }
