@@ -6,6 +6,9 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     private Transform cTransform;
 
+    public enum Character {BusinessMan = 0, Karate};
+    public Character CharacterSelect;
+
     float characterAcceleration = 20f;
     float maxSpeedThisJump;
 
@@ -13,6 +16,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     public int CharacterSpecialAmmo = 1;
 
     Vector3 ForceToAdd;
+    public Vector3 HorVelocityCheck;
 
     //const float MaxSpeedForTest = 
     Rigidbody currentRB;
@@ -31,7 +35,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             currentRB.AddForce(ForceToAdd * characterAcceleration);
 
             //max speed check, and reduce horizontal velocity if needed;
-            Vector3 HorVelocityCheck = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
+            HorVelocityCheck = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
 
             if (HorVelocityCheck.magnitude > maxSpeedThisJump)
             {
@@ -81,13 +85,27 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     }
 
     public void useSpecial(Rigidbody rb){
-        if(SpecialsLeft > 0)
+        if(CharacterSelect == Character.BusinessMan)
         {
-            Debug.Log("use special");
-            SpecialsLeft -= 1;
-            rb.velocity = new Vector3(0 * rb.velocity.x/2, 10f, 0 * rb.velocity.z/2);
-            maxSpeedThisJump *= .5f;
+            if (SpecialsLeft > 0)
+            {
+                Debug.Log("use double jump");
+                SpecialsLeft -= 1;
+                rb.velocity = new Vector3(0 * rb.velocity.x / 2, 10f, 0 * rb.velocity.z / 2);
+                maxSpeedThisJump *= .5f;
+            }
         }
+        else if (CharacterSelect == Character.Karate)
+        {
+            if (SpecialsLeft > 0)
+            {
+                Debug.Log("use divekick");
+                SpecialsLeft -= 1;
+                rb.velocity = new Vector3(0 * rb.velocity.x / 2, -20f, 0 * rb.velocity.z / 2);
+                maxSpeedThisJump *= .5f;
+            }
+        }
+
     }
 
     private Vector3 calculateForward(){
@@ -95,5 +113,10 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         forward.y = 0;
         forward = forward.normalized;
         return forward;
+    }
+
+    public Vector3 GetHorVelocityCheck()
+    {
+        return HorVelocityCheck;
     }
 }

@@ -12,4 +12,6 @@ public interface IPlayer {
 
     void useSpecial(Rigidbody rb);
 
+    Vector3 GetHorVelocityCheck();
+
 }

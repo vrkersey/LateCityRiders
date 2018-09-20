@@ -12,6 +12,9 @@ public class playerController : MonoBehaviour {
     bool inCar = false;
     GameObject car;
 
+    float nextCarDelay = 1f;
+    float nextCarTimer;
+
     //public float drag = .05f; - to be deleted
 	//public float maxControl = 15;
 	//public float jumpMultiplier = 15;
@@ -29,6 +32,7 @@ public class playerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Keyboard_Input();
+        nextCarTimer -= Time.deltaTime;
 	}
 
 	private void Keyboard_Input()
@@ -74,10 +78,19 @@ public class playerController : MonoBehaviour {
 
             thePlayer.exitVehicle(rb, car);
             grounded = false;
+
+            //if (other.gameObject.CompareTag("Car"))
+            //{
+            GetComponent<MeshRenderer>().enabled = true;
+            car.gameObject.GetComponent<Driving_Controls>().PlayerInCar = false;
+            inCar = false;
+            nextCarTimer = nextCarDelay;
+            //}
         }
         else if (Input.GetKeyDown(KeyCode.Space) && !grounded)
         {
             thePlayer.useSpecial(rb);
+            nextCarTimer = 0;
         }
 	}
 
@@ -91,16 +104,20 @@ public class playerController : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        grounded = true;
-        control = 0;
-        if (other.gameObject.CompareTag("Car") && !inCar)
+        
+        
+        if (other.gameObject.CompareTag("Car") && !inCar && nextCarTimer <=0f)
         {
+            grounded = true;
+            control = 0;
             car = other.gameObject;
             GetComponent<MeshRenderer>().enabled = false;
             other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = true;
             inCar = true;
             Destroy(player.GetComponent<Rigidbody>());
+            player.position = car.transform.position + (car.transform.up * 2) + (car.transform.forward * -1);
             player.parent = other.transform;
+            car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
         }
         if (other.gameObject.CompareTag("Kill Zone"))
         {
@@ -108,15 +125,15 @@ public class playerController : MonoBehaviour {
         }
     }
 
-    void OnTriggerExit(Collider other)
-	{
-		grounded = false;
-        if (other.gameObject.CompareTag("Car"))
-        {
-            GetComponent<MeshRenderer>().enabled = true;
-            other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = false;
+ //   void OnTriggerExit(Collider other)
+	//{
+	//	grounded = false;
+ //       if (other.gameObject.CompareTag("Car"))
+ //       {
+ //           GetComponent<MeshRenderer>().enabled = true;
+ //           other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = false;
 
-            inCar = false;
-        }
-    }
+ //           inCar = false;
+ //       }
+ //   }
 }
