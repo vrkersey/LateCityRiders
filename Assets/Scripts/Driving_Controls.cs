@@ -10,13 +10,32 @@ public class Driving_Controls : MonoBehaviour
     private bool playerInCar = false;
     public bool PlayerInCar { get { return playerInCar; } set { playerInCar = value; } }
 
+    //NEW: Set in inspector to determine what type of vehicle we're dealing with.
+    //Currently either "Plow" or "Basic"
+    public string vehicleType;
+
     void Start()
     {
         speed = 0;
-        acceleration = 0.3f;
-        slowDown = 0.2f;
-        maxSpeed = 60f;
-        turnSpeed = 0.8f;
+
+        //NEW: Sets variables for the plow vehicle.
+        if(vehicleType == "Plow")
+        {
+            acceleration = 0.2f;
+            slowDown = 0.2f;
+            maxSpeed = 60f;
+            turnSpeed = 0.5f;
+        }
+
+        //Sets variables for a basic vehicle.
+        else 
+        {
+            acceleration = 0.3f;
+            slowDown = 0.15f;
+            maxSpeed = 60f;
+            turnSpeed = 0.8f;
+        }
+
         grounded = false;
 
     }
@@ -71,8 +90,10 @@ public class Driving_Controls : MonoBehaviour
                     speed -= 2 * acceleration;
                 else
                     speed -= acceleration;
-                if (speed < -maxSpeed)
-                    speed = -maxSpeed;
+
+                //NEW: Keeps player from reversing at an unreasonable speed.
+                if (speed < -maxSpeed/2)
+                    speed = -maxSpeed/2;
             }
 
             //Slows down forward moving vehicle. Sets slowed down car to 0 if necessary.
@@ -94,11 +115,12 @@ public class Driving_Controls : MonoBehaviour
 
         //The following do not rely on being grounded. These control car direction.
         //Rotate left. Attempted to rotate around back of vehicle.
+        //NEW: If on the ground car turns based on front of vehicle. Otherwise it turns around middle of car.
         if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) && speed != 0)
         {
             temp = transform.position;
-            temp.x += 3f;
-            //temp.z += 5f;
+            if (grounded == true)
+                temp.x += 3f;
             transform.RotateAround(temp, transform.up, -turnSpeed);
         }
 
@@ -106,22 +128,34 @@ public class Driving_Controls : MonoBehaviour
         if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) && speed != 0)
         {
             temp = transform.position;
-            temp.x += 3f;
-            //temp.z -= 5f;
+            if(grounded == true)
+                temp.x += 3f;
             transform.RotateAround(temp, transform.up, turnSpeed);
         }
-
     }
 
+   
     ////On collison enter may not be necessary... TODO
     ////When driver lands on ground, regain acceleration based control.
-    //void OnCollisionEnter(Collision other)
-    //{
-    //    if (other.gameObject.CompareTag("Kill Zone"))
-    //    {
-    //        grounded = true;
-    //    }
-    //}
+    //NEW: Added collision for blocks. Only plows can move past these without losing/being flipped. 
+    //Basic cars are stopped immediately, Plows cause blocks to be knocked away.
+
+    //Sidenote:: May want to make turning off the kinematic a one time thing. That way, if a box is knocked onto traffic traffic won't necessarily stop when the car collides and sets kinematic to true.
+    //TODO: see if above note is viable.
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Blocks") && playerInCar)
+        {
+            if (vehicleType != "Plow")
+            {
+                other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            }
+            else
+            {
+                other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            }
+        }
+    }
 
     ////this seems redundant if we have oncollisionenter and oncollisionexit
     ////When driver is currently on ground, maintain acceleration control. 

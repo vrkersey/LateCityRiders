@@ -8,6 +8,8 @@ TagManager:
   - Car
   - Road
   - Goal
+  - Plow
+  - Blocks
   layers:
   - Default
   - TransparentFX
