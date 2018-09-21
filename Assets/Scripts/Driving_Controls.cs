@@ -23,8 +23,6 @@ public class Driving_Controls : MonoBehaviour
         {
             acceleration = 0.2f;
             slowDown = 0.2f;
-            maxSpeed = 60f;
-            turnSpeed = 0.5f;
         }
 
         //Sets variables for a basic vehicle.
@@ -32,10 +30,9 @@ public class Driving_Controls : MonoBehaviour
         {
             acceleration = 0.3f;
             slowDown = 0.15f;
-            maxSpeed = 120;
-            turnSpeed = 0.8f;
         }
-
+        maxSpeed = 60f;
+        turnSpeed = 0.8f;
         grounded = false;
 
     }
@@ -144,20 +141,30 @@ public class Driving_Controls : MonoBehaviour
 
     //Sidenote:: May want to make turning off the kinematic a one time thing. That way, if a box is knocked onto traffic traffic won't necessarily stop when the car collides and sets kinematic to true.
     //TODO: see if above note is viable.
-    void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Blocks") && playerInCar)
+        if(other.gameObject.CompareTag("Blocks") && PlayerInCar)
         {
-            if (vehicleType != "Plow")
+            if(vehicleType == "Plow")
             {
-                other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            }
-            else
-            {
-                other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                Destroy(other.gameObject);
             }
         }
     }
+    //void OnCollisionEnter(Collision other)
+    //{
+    //    if (other.gameObject.CompareTag("Blocks") && playerInCar)
+    //    {
+    //        if (vehicleType != "Plow")
+    //        {
+    //            other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+    //        }
+    //        else
+    //        {
+    //            other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+    //        }
+    //    }
+    //}
 
     ////this seems redundant if we have oncollisionenter and oncollisionexit
     ////When driver is currently on ground, maintain acceleration control. 
