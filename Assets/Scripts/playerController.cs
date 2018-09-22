@@ -24,6 +24,12 @@ public class playerController : MonoBehaviour
     Rigidbody rb;
     bool inCar = false;
     GameObject car;
+    public AudioSource soundEffects;
+    public AudioSource carSound;
+    public AudioClip jumpSound;
+    public AudioClip stompSound;
+    public AudioClip doubleSound;
+    public AudioClip killSound;
 
     float nextCarDelay = 1f;
     float nextCarTimer;
@@ -46,6 +52,15 @@ public class playerController : MonoBehaviour
         Keyboard_Input();
         Mouse_Input();
         nextCarTimer -= Time.deltaTime;
+
+        if (!inCar)
+        {
+            carSound.Pause();
+        }
+        else
+        {
+            carSound.UnPause();
+        }
     }
 
     private void Keyboard_Input()
@@ -84,6 +99,7 @@ public class playerController : MonoBehaviour
                 rb = gameObject.AddComponent<Rigidbody>();
             }
 
+            soundEffects.PlayOneShot(jumpSound);
             thePlayer.exitVehicle(rb, car);
             grounded = false;
             GetComponent<MeshRenderer>().enabled = true;
@@ -95,6 +111,8 @@ public class playerController : MonoBehaviour
         {
             thePlayer.useSpecial(rb);
             nextCarTimer = 0;
+            // if player's special is double
+            soundEffects.PlayOneShot(doubleSound);
         }
     }
 
@@ -132,6 +150,7 @@ public class playerController : MonoBehaviour
         if (other.gameObject.CompareTag("Kill Zone"))
         {
             Debug.Log("kill");
+            soundEffects.PlayOneShot(killSound);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
