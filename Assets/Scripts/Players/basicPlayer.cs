@@ -8,7 +8,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     //characters
     //NEW: Added selected char, which uses playerprefs.
-    public enum Character {BusinessMan = 0, Karate};
+    public enum Character {BusinessMan = 0, Karate, Firework};
     public Character CharacterSelect;
 
     //character variables

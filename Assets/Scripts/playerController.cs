@@ -22,11 +22,13 @@ public class playerController : MonoBehaviour
     public GameObject cameraPrefab;
     GameObject cameraSpawned;
 
+    public GameObject StartCar;
+
     Transform mainCamera;
     bool grounded = true;
     float control = 0;
     Rigidbody rb;
-    bool inCar = false;
+    bool inCar = true;
     GameObject car;
     public AudioSource soundEffects;
     public AudioSource carSound;
@@ -42,6 +44,7 @@ public class playerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+
         player = transform;
         cameraSpawned = Instantiate(cameraPrefab);
         cameraSpawned.transform.parent = player;
@@ -54,6 +57,8 @@ public class playerController : MonoBehaviour
         thePlayer = GetComponent<IPlayer>();
 
         originalRotation = transform.localRotation;
+
+        EnterCar(StartCar.GetComponent<Collider>());
     }
 
     // Update is called once per frame
@@ -178,33 +183,59 @@ public class playerController : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         
 
         //if (other.gameObject.CompareTag("Car") && !inCar && nextCarTimer <= 0f)
         if (other.gameObject.CompareTag("Car") && !inCar && player.transform.GetComponent<Rigidbody>().velocity.y <0)
             {
-            grounded = true;
-            control = 0;
-            car = other.gameObject;
-            GetComponent<MeshRenderer>().enabled = false;
-            other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = true;
 
-            //NEW: Adds a slight increase of initial speed when entering vehicles.
-            //other.gameObject.GetComponent<Driving_Controls>().speed = 15f;
-            inCar = true;
-            Destroy(player.GetComponent<Rigidbody>());
+            EnterCar(other);
+            //grounded = true;
+            //control = 0;
+            //car = other.gameObject;
+            //GetComponent<MeshRenderer>().enabled = false;
+            //other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = true;
 
-            //player.parent = other.transform;
-            //player.transform.rotation = Quaternion.identity;
-            player.transform.GetComponent<SphereCollider>().isTrigger = true;
+            ////NEW: Adds a slight increase of initial speed when entering vehicles.
+            ////other.gameObject.GetComponent<Driving_Controls>().speed = 15f;
+            //inCar = true;
+            //Destroy(player.GetComponent<Rigidbody>());
+
+            ////player.parent = other.transform;
+            ////player.transform.rotation = Quaternion.identity;
+            //player.transform.GetComponent<SphereCollider>().isTrigger = true;
 
 
-            player.position = car.transform.position + (car.transform.up * 2) + (car.transform.forward * -1);
-            car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
+            //player.position = car.transform.position + (car.transform.up * 2) + (car.transform.forward * -1);
+            //car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
 
-            car.GetComponent<NavMeshAgent>().enabled = false;
+            //car.GetComponent<NavMeshAgent>().enabled = false;
         }
+    }
+
+    void EnterCar(Collider other)
+    {
+        grounded = true;
+        control = 0;
+        car = other.gameObject;
+        GetComponent<MeshRenderer>().enabled = false;
+        other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = true;
+
+        //NEW: Adds a slight increase of initial speed when entering vehicles.
+        //other.gameObject.GetComponent<Driving_Controls>().speed = 15f;
+        inCar = true;
+        Destroy(player.GetComponent<Rigidbody>());
+
+        //player.parent = other.transform;
+        //player.transform.rotation = Quaternion.identity;
+        player.transform.GetComponent<SphereCollider>().isTrigger = true;
+
+
+        player.position = car.transform.position + (car.transform.up * 2) + (car.transform.forward * -1);
+        car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
+
+        car.GetComponent<NavMeshAgent>().enabled = false;
     }
 }
