@@ -10,7 +10,6 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     //NEW: Added selected char, which uses playerprefs.
     public enum Character {BusinessMan = 0, Karate};
     public Character CharacterSelect;
-    public int SelectedChar;
 
     //character variables
     float timeInAir = -1;
@@ -32,7 +31,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     void Start()
     {
         cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
-        SelectedChar = PlayerPrefs.GetInt("Character");
+        CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
     }
 
     void Update()
@@ -107,19 +106,17 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     }
 
     public void useSpecial(Rigidbody rb){
-        // if(CharacterSelect == Character.BusinessMan)
-        if(SelectedChar == 0)
+        if(CharacterSelect == Character.BusinessMan)
         {
             if (SpecialsLeft > 0)
             {
                 Debug.Log("use double jump");
                 SpecialsLeft -= 1;
-                rb.velocity = new Vector3(1 * rb.velocity.x / 2, 10f, 1 * rb.velocity.z / 2);
+                rb.velocity = new Vector3(1 * rb.velocity.x / 4, 10f, 1 * rb.velocity.z / 4);
                 maxSpeedThisJump *= .5f;
             }
         }
-        //else if(CharacterSelect == Character.Karate)
-        else if (SelectedChar == 1)
+        else if(CharacterSelect == Character.Karate)
         {
             if (SpecialsLeft > 0)
             {
@@ -145,8 +142,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     public Vector3 GetHorVelocityCheck()
     {
-       // if(CharacterSelect == Character.Karate && SpecialsLeft == 0)
-        if(SelectedChar == 1 && SpecialsLeft == 0)
+        if(CharacterSelect == Character.Karate && SpecialsLeft == 0)
         {
 
             Debug.Log("timeinair " + timeInAir);

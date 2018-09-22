@@ -18,6 +18,10 @@ public class playerController : MonoBehaviour
     private Quaternion originalRotation;
 
     Transform player;
+
+    public GameObject cameraPrefab;
+    GameObject cameraSpawned;
+
     Transform mainCamera;
     bool grounded = true;
     float control = 0;
@@ -39,6 +43,12 @@ public class playerController : MonoBehaviour
     void Start()
     {
         player = transform;
+        cameraSpawned = Instantiate(cameraPrefab);
+        cameraSpawned.transform.parent = player;
+
+        cameraSpawned.transform.localPosition = cameraPrefab.transform.position;
+        cameraSpawned.transform.localRotation = cameraPrefab.transform.rotation;
+
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         rb = player.GetComponent<Rigidbody>();
         thePlayer = GetComponent<IPlayer>();
@@ -121,8 +131,8 @@ public class playerController : MonoBehaviour
 
     private void Mouse_Input()
     {
-        Debug.Log(rotationX);
-        Debug.Log(rotationY);
+        //Debug.Log(rotationX);
+        //Debug.Log(rotationY);
 
         // Read the mouse input axis
         rotationX += (Input.GetAxis("Mouse X")) * sensitivityX;
@@ -157,7 +167,7 @@ public class playerController : MonoBehaviour
         {
             Debug.Log("kill");
             soundEffects.PlayOneShot(killSound);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene("MainMenu");
         }
 
         //NEW: Ends the level with a success. For prototype it simply restarts stage.
@@ -172,8 +182,9 @@ public class playerController : MonoBehaviour
     {
         
 
-        if (other.gameObject.CompareTag("Car") && !inCar && nextCarTimer <= 0f)
-        {
+        //if (other.gameObject.CompareTag("Car") && !inCar && nextCarTimer <= 0f)
+        if (other.gameObject.CompareTag("Car") && !inCar && player.transform.GetComponent<Rigidbody>().velocity.y <0)
+            {
             grounded = true;
             control = 0;
             car = other.gameObject;
