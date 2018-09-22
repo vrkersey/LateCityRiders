@@ -65,11 +65,11 @@ public class playerController : MonoBehaviour
 
     private void Keyboard_Input()
     {
-        if (Input.GetKey(KeyCode.W) && !inCar)
+        if ((Input.GetKey(KeyCode.W) || Input.GetAxis("Vertical") < 1) && !inCar)
         {
             thePlayer.moveForward(rb, 1);
         }
-        else if (Input.GetKey(KeyCode.S) && !inCar)
+        else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("Vertical") > 1) && !inCar)
         {
             thePlayer.moveForward(rb, -1);
         }
@@ -78,11 +78,11 @@ public class playerController : MonoBehaviour
             thePlayer.moveForward(rb, 0);
         }
 
-        if (Input.GetKey(KeyCode.D) && !inCar)
+        if ((Input.GetKey(KeyCode.D) || Input.GetAxis("Horizontal") < 1) && !inCar)
         {
             thePlayer.moveRight(rb, 1);
         }
-        else if (Input.GetKey(KeyCode.A) && !inCar)
+        else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") > 1) && !inCar)
         {
             thePlayer.moveRight(rb, -1);
         }
@@ -91,7 +91,7 @@ public class playerController : MonoBehaviour
             thePlayer.moveRight(rb, 0);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && grounded)
         {
             player.parent = null;
             if (rb == null)
@@ -107,7 +107,7 @@ public class playerController : MonoBehaviour
             inCar = false;
             nextCarTimer = nextCarDelay;
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && !grounded)
+        else if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && !grounded)
         {
             thePlayer.useSpecial(rb);
             nextCarTimer = 0;
