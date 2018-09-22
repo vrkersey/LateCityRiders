@@ -7,9 +7,11 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     private Transform cTransform;
 
     //characters
+    //NEW: Added selected char, which uses playerprefs.
     public enum Character {BusinessMan = 0, Karate};
     public Character CharacterSelect;
-    
+    public int SelectedChar;
+
     //character variables
     float timeInAir = -1;
 
@@ -30,6 +32,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     void Start()
     {
         cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        SelectedChar = PlayerPrefs.GetInt("Character");
     }
 
     void Update()
@@ -100,7 +103,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     }
 
     public void useSpecial(Rigidbody rb){
-        if(CharacterSelect == Character.BusinessMan)
+        // if(CharacterSelect == Character.BusinessMan)
+        if(SelectedChar == 0)
         {
             if (SpecialsLeft > 0)
             {
@@ -110,7 +114,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 maxSpeedThisJump *= .5f;
             }
         }
-        else if (CharacterSelect == Character.Karate)
+        //else if(CharacterSelect == Character.Karate)
+        else if (SelectedChar == 1)
         {
             if (SpecialsLeft > 0)
             {
@@ -136,7 +141,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     public Vector3 GetHorVelocityCheck()
     {
-        if(CharacterSelect == Character.Karate && SpecialsLeft == 0)
+       // if(CharacterSelect == Character.Karate && SpecialsLeft == 0)
+        if(SelectedChar == 1 && SpecialsLeft == 0)
         {
 
             Debug.Log("timeinair " + timeInAir);

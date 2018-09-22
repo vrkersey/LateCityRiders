@@ -53,8 +53,8 @@ public class Driving_Controls : MonoBehaviour
         //set velocity to speed
         if (grounded && playerInCar)
         {
-            //transform.GetComponent<Rigidbody>().velocity = new Vector3(speed * transform.forward.x, transform.GetComponent<Rigidbody>().velocity.y, speed * transform.forward.z);
-            transform.GetComponent<Rigidbody>().velocity = speed * transform.forward;
+            transform.GetComponent<Rigidbody>().velocity = new Vector3(speed * transform.forward.x, transform.GetComponent<Rigidbody>().velocity.y, speed * transform.forward.z);
+            //transform.GetComponent<Rigidbody>().velocity = speed * transform.forward;
 
         }
         else

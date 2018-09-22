@@ -139,7 +139,7 @@ public class playerController : MonoBehaviour
         if (other.gameObject.CompareTag("Goal"))
         {
             Debug.Log("goal");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene("MainMenu");
         }
     }
 
