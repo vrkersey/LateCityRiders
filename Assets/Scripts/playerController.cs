@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class playerController : MonoBehaviour
 {
@@ -132,6 +133,8 @@ public class playerController : MonoBehaviour
             player.position = car.transform.position + (car.transform.up * 2) + (car.transform.forward * -1);
             player.parent = other.transform;
             car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
+
+            car.GetComponent<NavMeshAgent>().enabled = false;
         }
         //if (other.gameObject.CompareTag("Kill Zone"))
         //{

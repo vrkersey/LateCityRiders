@@ -9,7 +9,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     //characters
     public enum Character {BusinessMan = 0, Karate};
     public Character CharacterSelect;
-
+    
     //character variables
     float timeInAir = -1;
 
@@ -21,6 +21,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     Vector3 ForceToAdd;
     public Vector3 HorVelocityCheck;
+
+    public float SpeedBoost = 20;
 
     //const float MaxSpeedForTest = 
     Rigidbody currentRB;
@@ -79,16 +81,16 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         //Rigidbody carRB = car.GetComponent<Rigidbody>();
         Driving_Controls CarControl = car.GetComponent<Driving_Controls>();
         float CarSpeed = Mathf.Abs(CarControl.speed);
-        float SpeedBoost = (CarSpeed / (CarControl.maxSpeed * 0.8f));
+        //float SpeedBoost = (CarSpeed / (CarControl.maxSpeed * 0.8f));
         maxSpeedThisJump = Mathf.Max( CarSpeed * SpeedBoost, 3f);
         //float CarDirection = CarSpeed / CarControl.speed;
 
 
         //add jump
-        rb.velocity = new Vector3(0f, ((CarSpeed / 4 ) * SpeedBoost) + 5, 0f);
+        rb.velocity = new Vector3(0f, ((CarSpeed / 4 ) + 3) + 5, 0f);
 
         //add velocity
-        rb.velocity += new Vector3(car.transform.GetComponent<Rigidbody>().velocity.x, 0, car.transform.GetComponent<Rigidbody>().velocity.z) * CarSpeed * SpeedBoost;
+        rb.velocity += new Vector3(car.transform.GetComponent<Rigidbody>().velocity.x, 0, car.transform.GetComponent<Rigidbody>().velocity.z).normalized * CarSpeed + -1 * car.transform.forward * SpeedBoost; 
 
         //reset ammo
         SpecialsLeft = CharacterSpecialAmmo;

@@ -32,7 +32,7 @@ public class Driving_Controls : MonoBehaviour
         {
             acceleration = 0.3f;
             slowDown = 0.15f;
-            maxSpeed = 60f;
+            maxSpeed = 120;
             turnSpeed = 0.8f;
         }
 
@@ -56,7 +56,9 @@ public class Driving_Controls : MonoBehaviour
         //set velocity to speed
         if (grounded && playerInCar)
         {
-            transform.GetComponent<Rigidbody>().velocity = new Vector3(-speed * transform.forward.x, transform.GetComponent<Rigidbody>().velocity.y, -speed * transform.forward.z);
+            //transform.GetComponent<Rigidbody>().velocity = new Vector3(speed * transform.forward.x, transform.GetComponent<Rigidbody>().velocity.y, speed * transform.forward.z);
+            transform.GetComponent<Rigidbody>().velocity = speed * transform.forward;
+
         }
         else
         {
