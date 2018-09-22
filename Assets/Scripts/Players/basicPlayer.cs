@@ -42,6 +42,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         {
             //Debug.Log(currentRB.velocity.magnitude);
             ForceToAdd = ForceToAdd.normalized;
+
             currentRB.AddForce(ForceToAdd * characterAcceleration);
 
             //max speed check, and reduce horizontal velocity if needed;
@@ -63,15 +64,18 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     }
 
     public void moveForward(Rigidbody rb, float value){
-        ForceToAdd = new Vector3(-value, ForceToAdd.y, ForceToAdd.z);
+        //ForceToAdd = new Vector3(-value, ForceToAdd.y, ForceToAdd.z);
+        ForceToAdd = new Vector3(ForceToAdd.x, ForceToAdd.y, ForceToAdd.z) + calculateForward() * value;
 
         //Vector3 forward = calculateForward();
         //rb.AddForce(forward * value * 10f);
     }
 
     public void moveRight(Rigidbody rb, float value){
-        
-        ForceToAdd = new Vector3(ForceToAdd.x, ForceToAdd.y, value);
+
+        //ForceToAdd = new Vector3(ForceToAdd.x, ForceToAdd.y, value);
+        ForceToAdd = new Vector3(ForceToAdd.x, ForceToAdd.y, ForceToAdd.z) + Vector3.Cross(Vector3.up, calculateForward()) * value;
+
         //Vector3 forward = calculateForward();
         //Vector3 right = Vector3.Cross(Vector3.up, forward);
         //rb.AddForce(right * value * 10f);
@@ -84,16 +88,16 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         //Rigidbody carRB = car.GetComponent<Rigidbody>();
         Driving_Controls CarControl = car.GetComponent<Driving_Controls>();
         float CarSpeed = Mathf.Abs(CarControl.speed);
-        //float SpeedBoost = (CarSpeed / (CarControl.maxSpeed * 0.8f));
-        maxSpeedThisJump = Mathf.Max( CarSpeed * SpeedBoost, 3f);
+        float SpeedBoost = (CarSpeed / (CarControl.maxSpeed * 0.8f));
+        maxSpeedThisJump = Mathf.Max(CarSpeed * SpeedBoost, 3f);
         //float CarDirection = CarSpeed / CarControl.speed;
 
 
         //add jump
-        rb.velocity = new Vector3(0f, ((CarSpeed / 4 ) + 3) + 5, 0f);
+        rb.velocity = new Vector3(0f, ((CarSpeed / 4) * SpeedBoost) + 5, 0f);
 
         //add velocity
-        rb.velocity += new Vector3(car.transform.GetComponent<Rigidbody>().velocity.x, 0, car.transform.GetComponent<Rigidbody>().velocity.z).normalized * CarSpeed + -1 * car.transform.forward * SpeedBoost; 
+        rb.velocity += new Vector3(car.transform.GetComponent<Rigidbody>().velocity.x, 0, car.transform.GetComponent<Rigidbody>().velocity.z) * CarSpeed * SpeedBoost;
 
         //reset ammo
         SpecialsLeft = CharacterSpecialAmmo;

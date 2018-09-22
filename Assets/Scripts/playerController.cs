@@ -59,17 +59,18 @@ public class playerController : MonoBehaviour
         }
         else
         {
+            transform.position = car.transform.position + car.transform.up * 1f ;
             carSound.UnPause();
         }
     }
 
     private void Keyboard_Input()
     {
-        if ((Input.GetKey(KeyCode.W) || Input.GetAxis("Vertical") < 1) && !inCar)
+        if ((Input.GetKey(KeyCode.W) || Input.GetAxis("Vertical") > 0) && !inCar)
         {
             thePlayer.moveForward(rb, 1);
         }
-        else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("Vertical") > 1) && !inCar)
+        else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("Vertical") < 0) && !inCar)
         {
             thePlayer.moveForward(rb, -1);
         }
@@ -78,11 +79,11 @@ public class playerController : MonoBehaviour
             thePlayer.moveForward(rb, 0);
         }
 
-        if ((Input.GetKey(KeyCode.D) || Input.GetAxis("Horizontal") < 1) && !inCar)
+        if ((Input.GetKey(KeyCode.D) || Input.GetAxis("Horizontal") > 0) && !inCar)
         {
             thePlayer.moveRight(rb, 1);
         }
-        else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") > 1) && !inCar)
+        else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") < 0) && !inCar)
         {
             thePlayer.moveRight(rb, -1);
         }
@@ -90,10 +91,10 @@ public class playerController : MonoBehaviour
         {
             thePlayer.moveRight(rb, 0);
         }
-
+        //exit vehicle
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && grounded)
         {
-            player.parent = null;
+            //player.parent = null;
             if (rb == null)
             {
                 rb = gameObject.AddComponent<Rigidbody>();
@@ -106,7 +107,9 @@ public class playerController : MonoBehaviour
             car.gameObject.GetComponent<Driving_Controls>().PlayerInCar = false;
             inCar = false;
             nextCarTimer = nextCarDelay;
+            player.transform.GetComponent<SphereCollider>().isTrigger = false;
         }
+        //special
         else if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && !grounded)
         {
             thePlayer.useSpecial(rb);
@@ -118,6 +121,9 @@ public class playerController : MonoBehaviour
 
     private void Mouse_Input()
     {
+        Debug.Log(rotationX);
+        Debug.Log(rotationY);
+
         // Read the mouse input axis
         rotationX += (Input.GetAxis("Mouse X")) * sensitivityX;
         rotationY += (Input.GetAxis("Mouse Y")) * sensitivityY;
@@ -178,8 +184,12 @@ public class playerController : MonoBehaviour
             //other.gameObject.GetComponent<Driving_Controls>().speed = 15f;
             inCar = true;
             Destroy(player.GetComponent<Rigidbody>());
-            player.parent = other.transform;
-            player.transform.rotation = Quaternion.identity;
+
+            //player.parent = other.transform;
+            //player.transform.rotation = Quaternion.identity;
+            player.transform.GetComponent<SphereCollider>().isTrigger = true;
+
+
             player.position = car.transform.position + (car.transform.up * 2) + (car.transform.forward * -1);
             car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
 
