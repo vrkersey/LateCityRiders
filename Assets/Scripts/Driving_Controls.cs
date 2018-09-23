@@ -12,14 +12,17 @@ public class Driving_Controls : MonoBehaviour
 
     //NEW: Set in inspector to determine what type of vehicle we're dealing with.
     //Currently either "Plow" or "Basic"
-    public string vehicleType;
+    public enum Vehicle { Basic = 0, Plow};
+    public Vehicle VehicleSelect;
+
+    public Vector3 PlayerPositionInCar = new Vector3(0,1,0);
 
     void Start()
     {
         speed = 0;
 
         //NEW: Sets variables for the plow vehicle.
-        if(vehicleType == "Plow")
+        if(VehicleSelect == Vehicle.Plow)
         {
             acceleration = 0.2f;
             slowDown = 0.2f;
@@ -145,7 +148,7 @@ public class Driving_Controls : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Blocks") && PlayerInCar)
         {
-            if(vehicleType == "Plow")
+            if(VehicleSelect == Vehicle.Plow)
             {
                 Destroy(other.gameObject);
             }

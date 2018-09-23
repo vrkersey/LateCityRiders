@@ -546,7 +546,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4064929094636266, guid: 3670f285ddaddde479a1c399f77418ef, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4064929094636266, guid: 3670f285ddaddde479a1c399f77418ef, type: 2}
       propertyPath: m_LocalScale.x
@@ -555,6 +555,21 @@ Prefab:
     - target: {fileID: 4064929094636266, guid: 3670f285ddaddde479a1c399f77418ef, type: 2}
       propertyPath: m_LocalScale.z
       value: 2.500001
+      objectReference: {fileID: 0}
+    - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: PlayerPositionInCar.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: PlayerPositionInCar.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: PlayerPositionInCar.x
+      value: -3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3670f285ddaddde479a1c399f77418ef, type: 2}
@@ -1557,6 +1572,21 @@ Prefab:
     - target: {fileID: 4064929094636266, guid: 3670f285ddaddde479a1c399f77418ef, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: PlayerPositionInCar.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: PlayerPositionInCar.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: PlayerPositionInCar.x
+      value: -3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3670f285ddaddde479a1c399f77418ef, type: 2}
@@ -4447,6 +4477,21 @@ Prefab:
       propertyPath: m_Name
       value: OfficialPlowBody (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: PlayerPositionInCar.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: PlayerPositionInCar.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: PlayerPositionInCar.x
+      value: -3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3670f285ddaddde479a1c399f77418ef, type: 2}
   m_IsPrefabAsset: 0
@@ -6163,7 +6208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7049854e3aee43d99d619a89fa6de0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterSelect: 2
+  CharacterSelect: 0
   characterAcceleration: 20
   CharacterSpecialAmmo: 1
   HorVelocityCheck: {x: 0, y: 0, z: 0}

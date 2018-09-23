@@ -77,7 +77,7 @@ public class playerController : MonoBehaviour
         }
         else
         {
-            transform.position = car.transform.position + car.transform.up * 1f ;
+            transform.position = car.transform.position + car.GetComponent<Driving_Controls>().PlayerPositionInCar;
             carSound.UnPause();
             DropShadow.SetActive(false);
         }
