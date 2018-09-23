@@ -31,6 +31,7 @@ public class playerController : MonoBehaviour
     float control = 0;
     Rigidbody rb;
     bool inCar = true;
+    public GameObject PlayerMesh;
     GameObject car;
     public AudioSource soundEffects;
     public AudioSource carSound;
@@ -150,7 +151,8 @@ public class playerController : MonoBehaviour
             soundEffects.PlayOneShot(jumpSound);
             thePlayer.exitVehicle(rb, car);
             grounded = false;
-            GetComponent<MeshRenderer>().enabled = true;
+            //GetComponent<MeshRenderer>().enabled = true;
+            PlayerMesh.SetActive(true);
             car.gameObject.GetComponent<Driving_Controls>().PlayerInCar = false;
             inCar = false;
             nextCarTimer = nextCarDelay;
@@ -260,6 +262,7 @@ public class playerController : MonoBehaviour
         control = 0;
         car = other.gameObject;
         GetComponent<MeshRenderer>().enabled = false;
+        PlayerMesh.SetActive(false);
         other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = true;
 
         //NEW: Adds a slight increase of initial speed when entering vehicles.
