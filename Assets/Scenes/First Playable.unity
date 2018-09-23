@@ -5490,7 +5490,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b2a093d03a1886f49a0e744a3802ec4d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 35.3
+      value: 35.1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b2a093d03a1886f49a0e744a3802ec4d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6210,7 +6210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7049854e3aee43d99d619a89fa6de0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterSelect: 0
+  CharacterSelect: 2
+  characterAcceleration: 20
   CharacterSpecialAmmo: 1
   HorVelocityCheck: {x: 0, y: 0, z: 0}
   SpeedBoost: 20
