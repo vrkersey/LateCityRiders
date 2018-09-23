@@ -18,4 +18,6 @@ public interface IPlayer {
 
     int GetSpecialsLeft();
 
+    void EnterVehicleCleanUp();
+
 }
