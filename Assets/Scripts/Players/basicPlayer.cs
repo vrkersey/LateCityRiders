@@ -208,7 +208,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 Debug.Log("use double jump");
                 SpecialsLeft -= 1;
                 rb.velocity = new Vector3(1 * rb.velocity.x / 4, Mathf.Max(rb.velocity.y, 0) + 10f, 1 * rb.velocity.z / 4);
-                maxSpeedThisJump *= .5f;
+                maxSpeedThisJump *= .9f;
             }
         }
         else if(CharacterSelect == Character.Karate)
@@ -250,7 +250,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     public Vector3 GetHorVelocityCheck()
     {
-        if(CharacterSelect == Character.BusinessMan && SpecialsLeft == 1)
+        if(CharacterSelect == Character.BusinessMan)
         {
             return HorVelocityCheck * 1.8f;
         }
