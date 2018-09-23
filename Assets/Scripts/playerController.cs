@@ -32,6 +32,8 @@ public class playerController : MonoBehaviour
     GameObject car;
     public AudioSource soundEffects;
     public AudioSource carSound;
+    public AudioSource music;
+    public AudioSource windSound;
     public AudioClip jumpSound;
     public AudioClip stompSound;
     public AudioClip doubleSound;
@@ -66,17 +68,8 @@ public class playerController : MonoBehaviour
     {
         Keyboard_Input();
         Mouse_Input();
+        UpdateAudio();
         nextCarTimer -= Time.deltaTime;
-
-        if (!inCar)
-        {
-            carSound.Pause();
-        }
-        else
-        {
-            transform.position = car.transform.position + car.transform.up * 1f ;
-            carSound.UnPause();
-        }
     }
 
     private void Keyboard_Input()
@@ -149,6 +142,29 @@ public class playerController : MonoBehaviour
         Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
         Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
         transform.localRotation = originalRotation * xQuaternion * yQuaternion;
+    }
+
+    private void UpdateAudio()
+    {
+        if (!inCar)
+        {
+            carSound.Pause();
+            music.Pause();
+            windSound.UnPause();
+            if (rb != null)
+            {
+                windSound.volume = rb.velocity.magnitude / 100;
+                print(rb.velocity.magnitude);
+            }
+        }
+        else
+        {
+            transform.position = car.transform.position + car.transform.up * 1f;
+            carSound.UnPause();
+            music.UnPause();
+            windSound.Pause();
+
+        }
     }
 
     public void resetRotation()
@@ -238,4 +254,6 @@ public class playerController : MonoBehaviour
 
         car.GetComponent<NavMeshAgent>().enabled = false;
     }
+
+
 }
