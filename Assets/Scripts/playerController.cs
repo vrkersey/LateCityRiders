@@ -24,6 +24,8 @@ public class playerController : MonoBehaviour
 
     public GameObject StartCar;
 
+    public GameObject DropShadow;
+
     Transform mainCamera;
     bool grounded = true;
     float control = 0;
@@ -71,11 +73,13 @@ public class playerController : MonoBehaviour
         if (!inCar)
         {
             carSound.Pause();
+            DropShadow.SetActive(true) ;
         }
         else
         {
             transform.position = car.transform.position + car.transform.up * 1f ;
             carSound.UnPause();
+            DropShadow.SetActive(false);
         }
     }
 
