@@ -20,4 +20,6 @@ public interface IPlayer {
 
     void EnterVehicleCleanUp();
 
+    int GetCharacter();
+
 }

@@ -34,7 +34,9 @@ public class playerController : MonoBehaviour
     GameObject car;
     public AudioSource soundEffects;
     public AudioSource carSound;
-    public AudioSource music;
+    public AudioSource music1;
+    public AudioSource music2;
+    public AudioSource music3;
     public AudioSource windSound;
     public AudioClip jumpSound;
     public AudioClip stompSound;
@@ -63,6 +65,21 @@ public class playerController : MonoBehaviour
         originalRotation = transform.localRotation;
 
         EnterCar(StartCar.GetComponent<Collider>());
+
+        switch (thePlayer.GetCharacter())
+        {
+            case 0:
+                music1.Play();
+                break;
+            case 1:
+                music2.Play();
+                break;
+            case 2:
+                music3.Play();
+                break;
+            default:
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -172,11 +189,13 @@ public class playerController : MonoBehaviour
         if (!inCar)
         {
             carSound.Pause();
-            music.Pause();
+            music1.volume = .3f;
+            music2.volume = .3f;
+            music3.volume = .3f;
             windSound.UnPause();
             if (rb != null)
             {
-                windSound.volume = rb.velocity.magnitude / 100;
+                windSound.volume = rb.velocity.magnitude / 200;
                 print(rb.velocity.magnitude);
             }
         }
@@ -184,7 +203,9 @@ public class playerController : MonoBehaviour
         {
             transform.position = car.transform.position + car.transform.up * 1f;
             carSound.UnPause();
-            music.UnPause();
+            music1.volume = 1f;
+            music2.volume = 1f;
+            music3.volume = 1f;
             windSound.Pause();
 
         }
@@ -228,29 +249,8 @@ public class playerController : MonoBehaviour
 
         //if (other.gameObject.CompareTag("Car") && !inCar && nextCarTimer <= 0f)
         if (other.gameObject.CompareTag("Car") && !inCar && player.transform.GetComponent<Rigidbody>().velocity.y <0)
-            {
-
+        {
             EnterCar(other);
-            //grounded = true;
-            //control = 0;
-            //car = other.gameObject;
-            //GetComponent<MeshRenderer>().enabled = false;
-            //other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = true;
-
-            ////NEW: Adds a slight increase of initial speed when entering vehicles.
-            ////other.gameObject.GetComponent<Driving_Controls>().speed = 15f;
-            //inCar = true;
-            //Destroy(player.GetComponent<Rigidbody>());
-
-            ////player.parent = other.transform;
-            ////player.transform.rotation = Quaternion.identity;
-            //player.transform.GetComponent<SphereCollider>().isTrigger = true;
-
-
-            //player.position = car.transform.position + (car.transform.up * 2) + (car.transform.forward * -1);
-            //car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
-
-            //car.GetComponent<NavMeshAgent>().enabled = false;
         }
     }
 

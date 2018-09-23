@@ -184,7 +184,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             {
                 Debug.Log("use double jump");
                 SpecialsLeft -= 1;
-                rb.velocity = new Vector3(1 * rb.velocity.x / 4, 10f, 1 * rb.velocity.z / 4);
+                rb.velocity = new Vector3(1 * rb.velocity.x / 4, Mathf.Max(rb.velocity.y, 0) + 10f, 1 * rb.velocity.z / 4);
                 maxSpeedThisJump *= .5f;
             }
         }
@@ -260,5 +260,10 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     public void EnterVehicleCleanUp()
     {
         rocketModel.SetActive(false);
+    }
+
+    public int GetCharacter()
+    {
+        return (int)CharacterSelect;
     }
 }
