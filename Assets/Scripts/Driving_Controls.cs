@@ -14,12 +14,14 @@ public class Driving_Controls : MonoBehaviour
     //Currently either "Plow" or "Basic"
     public enum Vehicle { Basic = 0, Plow};
     public Vehicle VehicleSelect;
+    Quaternion originalRotation;
 
     public Vector3 PlayerPositionInCar = new Vector3(0,1,0);
 
     void Start()
     {
         speed = 0;
+        originalRotation = transform.rotation;
 
         //NEW: Sets variables for the plow vehicle.
         if(VehicleSelect == Vehicle.Plow)
@@ -139,6 +141,12 @@ public class Driving_Controls : MonoBehaviour
             if(grounded == true)
                 temp.x += 3f;
             transform.RotateAround(temp, transform.up, turnSpeed);
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            speed = 0;
+            transform.rotation = originalRotation;
         }
     }
 
