@@ -19,7 +19,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     //firework
     public GameObject rocketModel;
     private float rocketTimer = -1;
-    float rocketTimeSet = 10f;
+    float rocketTimeSet = 5f;
     float rocketPitch;
     float rocketPitchMax = 50f;
     float rocketAccel = 50f;
