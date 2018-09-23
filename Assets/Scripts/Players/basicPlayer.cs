@@ -250,6 +250,10 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     public Vector3 GetHorVelocityCheck()
     {
+        if(CharacterSelect == Character.BusinessMan && SpecialsLeft == 1)
+        {
+            return HorVelocityCheck * 1.8f;
+        }
         if(CharacterSelect == Character.Karate && SpecialsLeft == 0)
         {
 
