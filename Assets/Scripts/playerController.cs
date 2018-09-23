@@ -106,20 +106,21 @@ public class playerController : MonoBehaviour
 
     private void Keyboard_Input()
     {
-        if ((Input.GetKey(KeyCode.W) || Input.GetAxis("Vertical") > 0) && !inCar)
+        if ((Input.GetKey(KeyCode.W) || Input.GetAxis("Vertical") > 0.1) && !inCar)
         {
             thePlayer.moveForward(rb, 1);
         }
-        else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("Vertical") < 0) && !inCar)
+        else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("Vertical") < -0.1) && !inCar)
         {
             thePlayer.moveForward(rb, -1);
         }
         else
         {
+            //Debug.Log("zero f");
             thePlayer.moveForward(rb, 0);
         }
 
-        if ((Input.GetKey(KeyCode.D) || Input.GetAxis("Horizontal") > 0) && !inCar)
+        if ((Input.GetKey(KeyCode.D) || Input.GetAxis("Horizontal") > 0.1) && !inCar)
         {
             thePlayer.moveRight(rb, 1);
             if (thePlayer.IsRocketMode())
@@ -127,7 +128,7 @@ public class playerController : MonoBehaviour
                 rotationX += 0.5f * sensitivityX;
             }
         }
-        else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") < 0) && !inCar)
+        else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") < -0.1) && !inCar)
         {
             thePlayer.moveRight(rb, -1);
             if (thePlayer.IsRocketMode())
@@ -137,6 +138,7 @@ public class playerController : MonoBehaviour
         }
         else
         {
+            //Debug.Log("zero h");
             thePlayer.moveRight(rb, 0);
         }
         //exit vehicle
@@ -198,7 +200,7 @@ public class playerController : MonoBehaviour
             if (rb != null)
             {
                 windSound.volume = rb.velocity.magnitude / 200;
-                print(rb.velocity.magnitude);
+                //print(rb.velocity.magnitude);
             }
         }
         else
@@ -277,8 +279,12 @@ public class playerController : MonoBehaviour
         //car speed boost from player moementum
         //Debug.Log("carboost " + thePlayer.GetHorVelocityCheck().magnitude / 2);
         car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
+        car.GetComponent<Driving_Controls>().maxSpeed = Mathf.Max(car.GetComponent<Driving_Controls>().maxSpeed, car.GetComponent<Driving_Controls>().speed + 15);
 
         car.GetComponent<NavMeshAgent>().enabled = false;
+
+        car.transform.rotation = player.transform.rotation;
+        car.transform.eulerAngles = new Vector3(car.transform.eulerAngles.x * 0, car.transform.eulerAngles.y, car.transform.eulerAngles.z);
 
         thePlayer.EnterVehicleCleanUp();
     }

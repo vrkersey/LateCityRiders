@@ -24,7 +24,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     float rocketPitchMax = 50f;
     float rocketAccel = 50f;
     float rocketSpeedBoostFromPitch;
-    
+    float rocketSpeed;
+    float newMaxSpeed;
 
 
     //end character variables
@@ -71,10 +72,28 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
                 currentRB.velocity = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
                 currentRB.velocity = Vector3.RotateTowards(currentRB.velocity, calculateForward(), 1.57f * Time.deltaTime, 0f);
-                
-                currentRB.velocity = currentRB.velocity.normalized * (maxSpeedThisJump + rocketSpeedBoostFromPitch);
+
+                //currentRB.velocity = currentRB.velocity.normalized * (maxSpeedThisJump + rocketSpeedBoostFromPitch); original, no buildup
+                currentRB.velocity = currentRB.velocity.normalized * (rocketSpeed + rocketSpeedBoostFromPitch);
                 currentRB.velocity = new Vector3(currentRB.velocity.x, rocketPitch, currentRB.velocity.z);
 
+                //get new max speed
+                newMaxSpeed = Mathf.Max(rocketSpeed + rocketSpeedBoostFromPitch, newMaxSpeed);
+                if(rocketSpeedBoostFromPitch <0)
+                {
+                    rocketSpeed += Time.deltaTime * (-rocketSpeedBoostFromPitch);
+                    if(rocketSpeed > newMaxSpeed)
+                    {
+                        rocketSpeed = newMaxSpeed;
+                    }
+                }
+                else
+                {
+                    rocketSpeed -= Time.deltaTime * 0.5f;
+                }
+                maxSpeedThisJump = rocketSpeed;
+                //Debug.Log("rocketSpeed " + rocketSpeed);
+                //Debug.Log("newMaxSpeed " + newMaxSpeed);
             }
             //normal movement
             else
@@ -82,7 +101,9 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 rocketModel.SetActive(false);
 
                 //Debug.Log(currentRB.velocity.magnitude);
+                //Debug.Log(ForceToAdd);
                 currentRB.AddForce(ForceToAdd * characterAcceleration);
+                ForceToAdd = Vector3.zero;
 
                 //max speed check, and reduce horizontal velocity if needed;
                 HorVelocityCheck = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
@@ -126,7 +147,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             }
 
             rocketSpeedBoostFromPitch -= rocketPitch / 0.5f * Time.deltaTime;
-            float rocketSpeedBoostFromPitchMax = maxSpeedThisJump / 2;
+            //float rocketSpeedBoostFromPitchMax = maxSpeedThisJump / 2; original, no buildup
+            float rocketSpeedBoostFromPitchMax = rocketSpeed / 2;
             if (rocketSpeedBoostFromPitch > rocketSpeedBoostFromPitchMax)
             {
                 rocketSpeedBoostFromPitch = rocketSpeedBoostFromPitchMax;
@@ -186,7 +208,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 Debug.Log("use double jump");
                 SpecialsLeft -= 1;
                 rb.velocity = new Vector3(1 * rb.velocity.x / 4, Mathf.Max(rb.velocity.y, 0) + 10f, 1 * rb.velocity.z / 4);
-                maxSpeedThisJump *= .5f;
+                maxSpeedThisJump *= .9f;
             }
         }
         else if(CharacterSelect == Character.Karate)
@@ -213,6 +235,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 rocketTimer = rocketTimeSet;
                 rocketPitch = 0f;
                 rocketSpeedBoostFromPitch = 0f;
+                rocketSpeed = maxSpeedThisJump;
             }
         }
 
@@ -227,13 +250,17 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     public Vector3 GetHorVelocityCheck()
     {
+        if(CharacterSelect == Character.BusinessMan)
+        {
+            return HorVelocityCheck * 1.8f;
+        }
         if(CharacterSelect == Character.Karate && SpecialsLeft == 0)
         {
 
             Debug.Log("timeinair " + timeInAir);
             Debug.Log("car boost " + HorVelocityCheck.magnitude * 5f);
             Debug.Log("car boost 2 " + HorVelocityCheck.magnitude * 5f * timeInAir);
-            return HorVelocityCheck * 5f * timeInAir * timeInAir;
+            return HorVelocityCheck * 3.5f * timeInAir * timeInAir;
         }
         if (CharacterSelect == Character.Firework && SpecialsLeft == 0)
         {
