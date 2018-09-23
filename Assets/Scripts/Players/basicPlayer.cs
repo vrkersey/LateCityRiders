@@ -64,7 +64,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             {
                 rocketModel.SetActive(true );
 
-                Debug.Log(rocketTimer);
+                //Debug.Log(rocketTimer);
                 rocketTimer -= Time.deltaTime;
                 //currentRB.velocity = (calculateForward() * maxSpeedThisJump);
 
