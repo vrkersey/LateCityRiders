@@ -81,7 +81,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 newMaxSpeed = Mathf.Max(rocketSpeed + rocketSpeedBoostFromPitch, newMaxSpeed);
                 if(rocketSpeedBoostFromPitch <0)
                 {
-                    rocketSpeed += Time.deltaTime * (-rocketSpeedBoostFromPitch *2);
+                    rocketSpeed += Time.deltaTime * (-rocketSpeedBoostFromPitch);
                     if(rocketSpeed > newMaxSpeed)
                     {
                         rocketSpeed = newMaxSpeed;
@@ -89,7 +89,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 }
                 else
                 {
-                    rocketSpeed -= Time.deltaTime;
+                    rocketSpeed -= Time.deltaTime * 0.5f;
                 }
                 maxSpeedThisJump = rocketSpeed;
                 Debug.Log("rocketSpeed " + rocketSpeed);
