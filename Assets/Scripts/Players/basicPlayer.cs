@@ -92,8 +92,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                     rocketSpeed -= Time.deltaTime * 0.5f;
                 }
                 maxSpeedThisJump = rocketSpeed;
-                Debug.Log("rocketSpeed " + rocketSpeed);
-                Debug.Log("newMaxSpeed " + newMaxSpeed);
+                //Debug.Log("rocketSpeed " + rocketSpeed);
+                //Debug.Log("newMaxSpeed " + newMaxSpeed);
             }
             //normal movement
             else

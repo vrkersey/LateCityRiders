@@ -276,6 +276,7 @@ public class playerController : MonoBehaviour
         //car speed boost from player moementum
         //Debug.Log("carboost " + thePlayer.GetHorVelocityCheck().magnitude / 2);
         car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
+        car.GetComponent<Driving_Controls>().maxSpeed = Mathf.Max(car.GetComponent<Driving_Controls>().maxSpeed, car.GetComponent<Driving_Controls>().speed + 15);
 
         car.GetComponent<NavMeshAgent>().enabled = false;
 
