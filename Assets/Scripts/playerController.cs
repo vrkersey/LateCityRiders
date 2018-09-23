@@ -279,6 +279,9 @@ public class playerController : MonoBehaviour
 
         car.GetComponent<NavMeshAgent>().enabled = false;
 
+        car.transform.rotation = player.transform.rotation;
+        car.transform.eulerAngles = new Vector3(car.transform.eulerAngles.x * 0, car.transform.eulerAngles.y, car.transform.eulerAngles.z);
+
         thePlayer.EnterVehicleCleanUp();
     }
 
