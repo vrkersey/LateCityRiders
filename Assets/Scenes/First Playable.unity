@@ -709,6 +709,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &197209987 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1637752918498920, guid: 3670f285ddaddde479a1c399f77418ef,
+    type: 2}
+  m_PrefabInternal: {fileID: 462546765}
+--- !u!65 &197209996
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 197209987}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.2094297, y: 1.4751501, z: 0.7630053}
+  m_Center: {x: 0.016008664, y: 1.51, z: -2.99}
 --- !u!4 &216766337 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: 6507085f24c5aeb46be060d1fb9c6b18,
@@ -1702,6 +1719,16 @@ Prefab:
     - target: {fileID: 114123281013720820, guid: 3670f285ddaddde479a1c399f77418ef,
         type: 2}
       propertyPath: VehicleSelect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65302541102386444, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65232397974228714, guid: 3670f285ddaddde479a1c399f77418ef,
+        type: 2}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3648,6 +3675,23 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53261a1895e79cd40a0c4a58a391218a, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &930690294 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1637752918498920, guid: 3670f285ddaddde479a1c399f77418ef,
+    type: 2}
+  m_PrefabInternal: {fileID: 142920637}
+--- !u!65 &930690302
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 930690294}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.2094297, y: 1.4751501, z: 0.7630053}
+  m_Center: {x: 0.016008664, y: 1.51, z: -2.99}
 --- !u!1 &934138033
 GameObject:
   m_ObjectHideFlags: 0
@@ -6954,7 +6998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7049854e3aee43d99d619a89fa6de0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterSelect: 1
+  CharacterSelect: 2
   rocketModel: {fileID: 1345301561}
   characterAcceleration: 20
   CharacterSpecialAmmo: 1
@@ -8112,6 +8156,23 @@ Transform:
   m_Father: {fileID: 1544264845}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2021069935 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1637752918498920, guid: 3670f285ddaddde479a1c399f77418ef,
+    type: 2}
+  m_PrefabInternal: {fileID: 1328291980}
+--- !u!65 &2021069944
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2021069935}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.2094297, y: 1.4751501, z: 0.7630053}
+  m_Center: {x: 0.016008664, y: 1.51, z: -2.99}
 --- !u!1001 &2049975082
 Prefab:
   m_ObjectHideFlags: 0
