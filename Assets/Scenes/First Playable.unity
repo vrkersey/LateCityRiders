@@ -10128,6 +10128,7 @@ GameObject:
   - component: {fileID: 1861247138}
   - component: {fileID: 1861247139}
   - component: {fileID: 1861247140}
+  - component: {fileID: 1861247141}
   m_Layer: 0
   m_Name: Sphere(Player)
   m_TagString: Player
@@ -10268,7 +10269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7049854e3aee43d99d619a89fa6de0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterSelect: 0
+  CharacterSelect: 1
   rocketModel: {fileID: 1345301561}
   characterAcceleration: 20
   CharacterSpecialAmmo: 1
@@ -10291,6 +10292,24 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!95 &1861247141
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1861247132}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: c787ecdee074c9d459b074178a86fe21, type: 3}
+  m_Controller: {fileID: 9100000, guid: 4f2e36c229f3b9f458db25247da018b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1869457696
 GameObject:
   m_ObjectHideFlags: 0

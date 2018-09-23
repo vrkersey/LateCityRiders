@@ -44,8 +44,8 @@ public class Driving_Controls : MonoBehaviour
     void Update()
     {
         if (playerInCar) {
-            Debug.Log("speed " + speed);
-            Debug.Log("max speed " + maxSpeed);
+            //Debug.Log("speed " + speed);
+           // Debug.Log("max speed " + maxSpeed);
         }
         
 

@@ -29,6 +29,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
 
     //end character variables
+    private Animator CharAnim;
 
     public float characterAcceleration = 20f;
     private float maxSpeedThisJump;
@@ -49,12 +50,14 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     {
         cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
         //CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
+
+        CharAnim = GetComponent<Animator>();
     }
 
     void Update()
     {
         //Debug.Log("maxspeedthisjump" + maxSpeedThisJump);
-
+        
         
         if (currentRB)
         {
@@ -103,7 +106,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 //Debug.Log(currentRB.velocity.magnitude);
                 //Debug.Log(ForceToAdd);
                 currentRB.AddForce(ForceToAdd * characterAcceleration);
-                ForceToAdd = Vector3.zero;
+                ForceToAdd = Vector3.zero; 
 
                 //max speed check, and reduce horizontal velocity if needed;
                 HorVelocityCheck = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
@@ -115,6 +118,10 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                     HorVelocityCheck *= maxSpeedThisJump;
                     currentRB.velocity = new Vector3(HorVelocityCheck.x, saveY, HorVelocityCheck.z);
                 }
+                //Animation code
+                float AnimatorSpeed;
+                AnimatorSpeed = HorVelocityCheck.magnitude;
+                CharAnim.SetFloat("Speed", AnimatorSpeed);
             }
            
         }
@@ -196,16 +203,21 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         SpecialsLeft = CharacterSpecialAmmo;
 
         //reset specials
+        CharAnim.SetBool("Is_Special", false);
+        Debug.Log("reset");
         timeInAir = -1;
         rocketTimer = -1f;
     }
 
     public void useSpecial(Rigidbody rb){
-        if(CharacterSelect == Character.BusinessMan)
+
+        CharAnim.SetBool("Is_Special", true);
+        if (CharacterSelect == Character.BusinessMan)
         {
             if (SpecialsLeft > 0)
             {
                 Debug.Log("use double jump");
+                CharAnim.SetTrigger("Special_Buisness");
                 SpecialsLeft -= 1;
                 rb.velocity = new Vector3(1 * rb.velocity.x / 4, Mathf.Max(rb.velocity.y, 0) + 10f, 1 * rb.velocity.z / 4);
                 maxSpeedThisJump *= .9f;
@@ -216,6 +228,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             if (SpecialsLeft > 0)
             {
                 Debug.Log("use divekick");
+                CharAnim.SetTrigger("Special_Karate");
                 SpecialsLeft -= 1;
                 Vector3 dir = GetHorVelocityCheck().normalized;
                 rb.velocity = new Vector3(0 * rb.velocity.x / 2, -50f, 0 * rb.velocity.z / 2);
