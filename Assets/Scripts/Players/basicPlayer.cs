@@ -115,6 +115,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         if (CharacterSelect == Character.Firework && rocketTimer > 0)
         {
             rocketPitch -= value * Time.deltaTime * rocketAccel;
+            rocketPitch -= Time.deltaTime * 2;
             if (rocketPitch > rocketPitchMax)
             {
                 rocketPitch = rocketPitchMax;

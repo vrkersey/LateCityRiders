@@ -6817,7 +6817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7049854e3aee43d99d619a89fa6de0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterSelect: 1
+  CharacterSelect: 2
   rocketModel: {fileID: 1345301561}
   characterAcceleration: 20
   CharacterSpecialAmmo: 1
