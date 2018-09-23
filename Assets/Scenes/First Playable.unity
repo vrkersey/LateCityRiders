@@ -10246,7 +10246,7 @@ MonoBehaviour:
     type: 2}
   StartCar: {fileID: 572979452}
   DropShadow: {fileID: 880044799}
-  PlayerMesh: {fileID: 100000, guid: c787ecdee074c9d459b074178a86fe21, type: 3}
+  PlayerMesh: {fileID: 1745962521}
   soundEffects: {fileID: 594905181}
   carSound: {fileID: 2000026828}
   music1: {fileID: 609140880}
