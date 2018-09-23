@@ -12,15 +12,30 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     public Character CharacterSelect;
 
     //character variables
-    float timeInAir = -1;
 
-    float characterAcceleration = 20f;
-    float maxSpeedThisJump;
+    //karate
+    private float timeInAir = -1;
 
-    int SpecialsLeft = 0;
+    //firework
+    private float rocketTimer = -1;
+    float rocketTimeSet = 5f;
+    float rocketPitch;
+    float rocketPitchMax = 50f;
+    float rocketAccel = 50f;
+    float rocketSpeedBoostFromPitch;
+    
+
+
+    //end character variables
+
+    public float characterAcceleration = 20f;
+    private float maxSpeedThisJump;
+
+    private int SpecialsLeft = 0;
     public int CharacterSpecialAmmo = 1;
 
-    Vector3 ForceToAdd;
+    private Vector3 ForceToAdd;
+    [HideInInspector]
     public Vector3 HorVelocityCheck;
 
     public float SpeedBoost = 20;
@@ -31,31 +46,55 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     void Start()
     {
         cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
-        CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
+        //CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
     }
 
     void Update()
     {
         //Debug.Log("maxspeedthisjump" + maxSpeedThisJump);
+
+        
         if (currentRB)
         {
-            //Debug.Log(currentRB.velocity.magnitude);
             ForceToAdd = ForceToAdd.normalized;
 
-            currentRB.AddForce(ForceToAdd * characterAcceleration);
-
-            //max speed check, and reduce horizontal velocity if needed;
-            HorVelocityCheck = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
-
-            if (HorVelocityCheck.magnitude > maxSpeedThisJump)
+            //rocket movement
+            if (CharacterSelect == Character.Firework && rocketTimer > 0)
             {
-                float saveY = currentRB.velocity.y;
-                HorVelocityCheck = HorVelocityCheck.normalized;
-                HorVelocityCheck *= maxSpeedThisJump;
-                currentRB.velocity = new Vector3(HorVelocityCheck.x, saveY, HorVelocityCheck.z);
+                Debug.Log(rocketTimer);
+                rocketTimer -= Time.deltaTime;
+                //currentRB.velocity = (calculateForward() * maxSpeedThisJump);
+
+
+                currentRB.velocity = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
+                currentRB.velocity = Vector3.RotateTowards(currentRB.velocity, calculateForward(), 1.57f * Time.deltaTime, 0f);
+                
+                currentRB.velocity = currentRB.velocity.normalized * (maxSpeedThisJump + rocketSpeedBoostFromPitch);
+                currentRB.velocity = new Vector3(currentRB.velocity.x, rocketPitch, currentRB.velocity.z);
+
             }
+            //normal movement
+            else
+            {
+                //Debug.Log(currentRB.velocity.magnitude);
+                currentRB.AddForce(ForceToAdd * characterAcceleration);
+
+                //max speed check, and reduce horizontal velocity if needed;
+                HorVelocityCheck = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
+
+                if (HorVelocityCheck.magnitude > maxSpeedThisJump)
+                {
+                    float saveY = currentRB.velocity.y;
+                    HorVelocityCheck = HorVelocityCheck.normalized;
+                    HorVelocityCheck *= maxSpeedThisJump;
+                    currentRB.velocity = new Vector3(HorVelocityCheck.x, saveY, HorVelocityCheck.z);
+                }
+            }
+           
         }
 
+
+        //karate
         if (timeInAir > -1)
         {
             timeInAir += Time.deltaTime;
@@ -65,6 +104,29 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     public void moveForward(Rigidbody rb, float value){
         //ForceToAdd = new Vector3(-value, ForceToAdd.y, ForceToAdd.z);
         ForceToAdd = new Vector3(ForceToAdd.x, ForceToAdd.y, ForceToAdd.z) + calculateForward() * value;
+        
+
+        //firework
+        rocketPitch -= value * Time.deltaTime * rocketAccel;
+        if(rocketPitch > rocketPitchMax)
+        {
+            rocketPitch = rocketPitchMax;
+        }
+        else if (rocketPitch < -rocketPitchMax)
+        {
+            rocketPitch = -rocketPitchMax;
+        }
+
+        rocketSpeedBoostFromPitch -= rocketPitch / 0.5f * Time.deltaTime;
+        float rocketSpeedBoostFromPitchMax = maxSpeedThisJump / 2;
+        if (rocketSpeedBoostFromPitch > rocketSpeedBoostFromPitchMax)
+        {
+            rocketSpeedBoostFromPitch = rocketSpeedBoostFromPitchMax;
+        }
+        else if (rocketSpeedBoostFromPitch < -rocketSpeedBoostFromPitchMax)
+        {
+            rocketSpeedBoostFromPitch = -rocketSpeedBoostFromPitchMax;
+        }
 
         //Vector3 forward = calculateForward();
         //rb.AddForce(forward * value * 10f);
@@ -103,6 +165,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
         //reset specials
         timeInAir = -1;
+        rocketTimer = -1f;
     }
 
     public void useSpecial(Rigidbody rb){
@@ -130,6 +193,18 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 timeInAir = 1f;
             }
         }
+        else if (CharacterSelect == Character.Firework)
+        {
+            if(SpecialsLeft > 0)
+            {
+                Debug.Log("use firework");
+                SpecialsLeft -= 1;
+                maxSpeedThisJump *= 1.2f;
+                rocketTimer = rocketTimeSet;
+                rocketPitch = 0f;
+                rocketSpeedBoostFromPitch = 0f;
+            }
+        }
 
     }
 
@@ -149,5 +224,19 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             return HorVelocityCheck * 5;// * timeInAir;
         }
         return HorVelocityCheck;
+    }
+
+    public bool IsRocketMode()
+    {
+        if (CharacterSelect == Character.Firework && rocketTimer > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public int GetSpecialsLeft()
+    {
+        return SpecialsLeft;
     }
 }
