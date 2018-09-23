@@ -256,4 +256,9 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     {
         return SpecialsLeft;
     }
+
+    public void EnterVehicleCleanUp()
+    {
+        rocketModel.SetActive(false);
+    }
 }

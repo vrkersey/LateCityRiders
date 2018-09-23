@@ -250,5 +250,7 @@ public class playerController : MonoBehaviour
         car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
 
         car.GetComponent<NavMeshAgent>().enabled = false;
+
+        thePlayer.EnterVehicleCleanUp();
     }
 }
