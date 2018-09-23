@@ -43,7 +43,11 @@ public class Driving_Controls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(speed);
+        if (playerInCar) {
+            Debug.Log("speed " + speed);
+            Debug.Log("max speed " + maxSpeed);
+        }
+        
 
         if (PlayerInCar)
             KeyPress();

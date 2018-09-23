@@ -256,7 +256,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             Debug.Log("timeinair " + timeInAir);
             Debug.Log("car boost " + HorVelocityCheck.magnitude * 5f);
             Debug.Log("car boost 2 " + HorVelocityCheck.magnitude * 5f * timeInAir);
-            return HorVelocityCheck * 5f * timeInAir * timeInAir;
+            return HorVelocityCheck * 3.5f * timeInAir * timeInAir;
         }
         if (CharacterSelect == Character.Firework && SpecialsLeft == 0)
         {
