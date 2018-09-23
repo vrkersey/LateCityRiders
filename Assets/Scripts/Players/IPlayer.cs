@@ -14,4 +14,8 @@ public interface IPlayer {
 
     Vector3 GetHorVelocityCheck();
 
+    bool IsRocketMode();
+
+    int GetSpecialsLeft();
+
 }

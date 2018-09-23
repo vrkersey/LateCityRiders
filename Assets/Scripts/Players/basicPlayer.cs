@@ -225,4 +225,18 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         }
         return HorVelocityCheck;
     }
+
+    public bool IsRocketMode()
+    {
+        if (CharacterSelect == Character.Firework && rocketTimer > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public int GetSpecialsLeft()
+    {
+        return SpecialsLeft;
+    }
 }

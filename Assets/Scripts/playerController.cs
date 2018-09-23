@@ -97,10 +97,18 @@ public class playerController : MonoBehaviour
         if ((Input.GetKey(KeyCode.D) || Input.GetAxis("Horizontal") > 0) && !inCar)
         {
             thePlayer.moveRight(rb, 1);
+            if (thePlayer.IsRocketMode())
+            {
+                rotationX += 0.5f * sensitivityX;
+            }
         }
         else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") < 0) && !inCar)
         {
             thePlayer.moveRight(rb, -1);
+            if (thePlayer.IsRocketMode())
+            {
+                rotationX -= 0.5f * sensitivityX;
+            }
         }
         else
         {
@@ -130,6 +138,7 @@ public class playerController : MonoBehaviour
             thePlayer.useSpecial(rb);
             nextCarTimer = 0;
             // if player's special is double
+            if(thePlayer.GetSpecialsLeft() > 0)
             soundEffects.PlayOneShot(doubleSound);
         }
     }
