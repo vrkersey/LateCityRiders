@@ -52,10 +52,12 @@ public class playerController : MonoBehaviour
 
     private bool IsKilled;
 
+    float deathcammultiplier;
+
     // Use this for initialization
     void Start()
     {
-
+        deathcammultiplier = 0f;
         player = transform;
         cameraSpawned = Instantiate(cameraPrefab);
         cameraSpawned.transform.parent = player;
@@ -109,7 +111,8 @@ public class playerController : MonoBehaviour
             {
                 Debug.Log("lloking");
                 cameraSpawned.transform.LookAt(RagdollPelvis.transform);
-                cameraSpawned.transform.position += (RagdollPelvis.transform.position - cameraSpawned.transform.position).normalized * ((1f * (RagdollPelvis.transform.position - cameraSpawned.transform.position).magnitude) -2f) * Time.deltaTime;
+                deathcammultiplier += Time.deltaTime;
+                cameraSpawned.transform.position += (RagdollPelvis.transform.position - cameraSpawned.transform.position).normalized * ((1f * (RagdollPelvis.transform.position - cameraSpawned.transform.position).magnitude) - 2f) * deathcammultiplier * Time.deltaTime ;
             }
         }
         
@@ -248,7 +251,7 @@ public class playerController : MonoBehaviour
         RagdollPrefab.SetActive(true);
         RagdollPrefab.transform.parent = null;
         Debug.Log(impactVelocity);
-        RagdollPelvis.velocity = impactVelocity * 3f;
+        RagdollPelvis.velocity = (impactVelocity + (Vector3.up * impactVelocity.magnitude / 4)) * 4f;
         cameraSpawned.transform.parent = null;
         
         yield return new WaitForSeconds(6f);
