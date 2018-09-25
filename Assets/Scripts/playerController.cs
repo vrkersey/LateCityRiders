@@ -32,6 +32,7 @@ public class playerController : MonoBehaviour
     Rigidbody rb;
     bool inCar = true;
     public GameObject PlayerMesh;
+    public GameObject RagdollPrefab;
     GameObject car;
     public AudioSource soundEffects;
     public AudioSource carSound;
@@ -47,6 +48,8 @@ public class playerController : MonoBehaviour
     float nextCarDelay = 1f;
     float nextCarTimer;
     public IPlayer thePlayer;
+
+    private bool IsKilled;
 
     // Use this for initialization
     void Start()
@@ -91,10 +94,10 @@ public class playerController : MonoBehaviour
         UpdateAudio();
         nextCarTimer -= Time.deltaTime;
 
-        if (!inCar)
+        if (!inCar && !IsKilled)
         {
             carSound.Pause();
-            DropShadow.SetActive(true) ;
+            DropShadow.SetActive(true);
         }
         else
         {
@@ -229,21 +232,35 @@ public class playerController : MonoBehaviour
             angle -= 360F;
         return Mathf.Clamp(angle, min, max);
     }
-
+    
+    IEnumerator WaitToRagdoll()
+    {
+        PlayerMesh.SetActive(false);
+        DropShadow.SetActive(false);
+        RagdollPrefab.SetActive(true);
+        RagdollPrefab.transform.parent = null;
+        cameraSpawned.transform.parent = null;
+        cameraSpawned.transform.LookAt(RagdollPrefab.transform);
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("MainMenu");
+    }
+    
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Kill Zone"))
         {
-            Debug.Log("kill");
+
+            IsKilled = true;
             soundEffects.PlayOneShot(killSound);
-            SceneManager.LoadScene("MainMenu");
+            StartCoroutine(WaitToRagdoll());
+            
         }
 
         //NEW: Ends the level with a success. For prototype it simply restarts stage.
         if (other.gameObject.CompareTag("Goal"))
         {
             Debug.Log("goal");
-            SceneManager.LoadScene("MainMenu");
+            StartCoroutine(WaitToRagdoll());
         }
     }
 

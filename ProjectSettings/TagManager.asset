@@ -10,6 +10,7 @@ TagManager:
   - Goal
   - Plow
   - Blocks
+  - RigidbodyPelvis
   layers:
   - Default
   - TransparentFX
