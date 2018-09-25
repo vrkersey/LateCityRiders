@@ -147,6 +147,10 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             }
 
             rocketSpeedBoostFromPitch -= rocketPitch / 0.5f * Time.deltaTime;
+            //if(rocketPitch > 0)
+            //{
+            //    rocketSpeedBoostFromPitch -= rocketPitch / 0.5f * Time.deltaTime;
+            //}
             //float rocketSpeedBoostFromPitchMax = maxSpeedThisJump / 2; original, no buildup
             float rocketSpeedBoostFromPitchMax = rocketSpeed / 2;
             if (rocketSpeedBoostFromPitch > rocketSpeedBoostFromPitchMax)
