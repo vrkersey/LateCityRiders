@@ -31,6 +31,7 @@ public class playerController : MonoBehaviour
     float control = 0;
     Rigidbody rb;
     bool inCar = true;
+    public GameObject SpawnedPlayerGroup;
     public GameObject PlayerMesh;
     public GameObject RagdollPrefab;
     public Rigidbody RagdollPelvis;
@@ -96,6 +97,12 @@ public class playerController : MonoBehaviour
         Mouse_Input();
         UpdateAudio();
         nextCarTimer -= Time.deltaTime;
+        SpawnedPlayerGroup.transform.position = transform.position;
+        if (rb)
+        {
+
+            SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y * thePlayer.LookY(), rb.velocity.z).normalized);
+        }
 
         if (!inCar && !IsKilled)
         {
@@ -109,7 +116,7 @@ public class playerController : MonoBehaviour
             DropShadow.SetActive(false);
             if (IsKilled)
             {
-                Debug.Log("lloking");
+                //Debug.Log("lloking");
                 cameraSpawned.transform.LookAt(RagdollPelvis.transform);
                 deathcammultiplier += Time.deltaTime;
                 cameraSpawned.transform.position += ((RagdollPelvis.transform.position + Vector3.up * deathcammultiplier) - cameraSpawned.transform.position).normalized * ((1f * ((RagdollPelvis.transform.position + Vector3.up * deathcammultiplier) - cameraSpawned.transform.position).magnitude) - 2f) * deathcammultiplier * Time.deltaTime ;
@@ -243,18 +250,20 @@ public class playerController : MonoBehaviour
             angle -= 360F;
         return Mathf.Clamp(angle, min, max);
     }
-    
-    IEnumerator WaitToRagdoll(Vector3 impactVelocity)
+
+    IEnumerator WaitToRagdoll(Vector3 impactVelocity, Vector3 hitNormal)
     {
         PlayerMesh.SetActive(false);
         DropShadow.SetActive(false);
         RagdollPrefab.SetActive(true);
         RagdollPrefab.transform.parent = null;
-        Debug.Log(impactVelocity);
-        RagdollPelvis.velocity = (impactVelocity + (Vector3.up * impactVelocity.magnitude / 4)) * 4f;
+        RagdollPrefab.transform.position += hitNormal * 2 - Vector3.up/2;
+        //Debug.Log(impactVelocity);
+        RagdollPelvis.velocity = (new Vector3(impactVelocity.x, 0, impactVelocity.z) + (hitNormal * ((impactVelocity.magnitude / 4 ) +3f) )) * 4f;
         cameraSpawned.transform.parent = null;
-        
-        yield return new WaitForSeconds(6f);
+
+        Debug.Log("death " + Mathf.Min(3f + impactVelocity.magnitude / 15, 10f));
+        yield return new WaitForSeconds(Mathf.Min( 3f + impactVelocity.magnitude/15, 10f));
         SceneManager.LoadScene("MainMenu");
     }
     
@@ -265,7 +274,7 @@ public class playerController : MonoBehaviour
 
             IsKilled = true;
             soundEffects.PlayOneShot(killSound);
-            StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity));
+            StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity, other.contacts[0].normal));
             
         }
 
@@ -273,7 +282,7 @@ public class playerController : MonoBehaviour
         if (other.gameObject.CompareTag("Goal"))
         {
             Debug.Log("goal");
-            StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity));
+            StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity, other.contacts[0].normal));
         }
     }
 

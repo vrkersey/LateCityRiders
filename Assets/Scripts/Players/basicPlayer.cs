@@ -29,7 +29,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
 
     //end character variables
-    private Animator CharAnim;
+    public Animator CharAnim;
 
     public float characterAcceleration = 20f;
     private float maxSpeedThisJump;
@@ -50,8 +50,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     {
         cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
         //CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
-
-        CharAnim = GetComponent<Animator>();
+        
     }
 
     void Update()
@@ -274,15 +273,15 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         if(CharacterSelect == Character.Karate && SpecialsLeft == 0)
         {
 
-            Debug.Log("timeinair " + timeInAir);
-            Debug.Log("car boost " + HorVelocityCheck.magnitude * 5f);
-            Debug.Log("car boost 2 " + HorVelocityCheck.magnitude * 5f * timeInAir);
+            //Debug.Log("timeinair " + timeInAir);
+            //Debug.Log("car boost " + HorVelocityCheck.magnitude * 5f);
+            //Debug.Log("car boost 2 " + HorVelocityCheck.magnitude * 5f * timeInAir);
             return HorVelocityCheck * 3.5f * timeInAir * timeInAir;
         }
         if (CharacterSelect == Character.Firework && SpecialsLeft == 0)
         {
 
-            Debug.Log("rocketSpeedBoostFromPitch " + rocketSpeedBoostFromPitch);
+            //Debug.Log("rocketSpeedBoostFromPitch " + rocketSpeedBoostFromPitch);
             return HorVelocityCheck + HorVelocityCheck.normalized * rocketSpeedBoostFromPitch * 2;
         }
         return HorVelocityCheck;
@@ -310,5 +309,22 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     public int GetCharacter()
     {
         return (int)CharacterSelect;
+    }
+
+    public float LookY()
+    {
+        if(CharacterSelect == Character.Firework && SpecialsLeft == 0 && rocketTimer > 0)
+        {
+            return 1f;
+        }
+        else if (CharacterSelect == Character.Karate && SpecialsLeft == 0)
+        {
+            return 0;
+        }
+        else if(currentRB.velocity.y < 0)
+        {
+            return 1;
+        }
+        return 1f;
     }
 }

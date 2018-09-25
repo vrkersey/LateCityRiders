@@ -22,4 +22,5 @@ public interface IPlayer {
 
     int GetCharacter();
 
+    float LookY();
 }
