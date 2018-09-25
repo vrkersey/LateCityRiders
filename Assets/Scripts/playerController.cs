@@ -112,7 +112,7 @@ public class playerController : MonoBehaviour
                 Debug.Log("lloking");
                 cameraSpawned.transform.LookAt(RagdollPelvis.transform);
                 deathcammultiplier += Time.deltaTime;
-                cameraSpawned.transform.position += (RagdollPelvis.transform.position - cameraSpawned.transform.position).normalized * ((1f * (RagdollPelvis.transform.position - cameraSpawned.transform.position).magnitude) - 2f) * deathcammultiplier * Time.deltaTime ;
+                cameraSpawned.transform.position += ((RagdollPelvis.transform.position + Vector3.up * deathcammultiplier) - cameraSpawned.transform.position).normalized * ((1f * ((RagdollPelvis.transform.position + Vector3.up * deathcammultiplier) - cameraSpawned.transform.position).magnitude) - 2f) * deathcammultiplier * Time.deltaTime ;
             }
         }
         
