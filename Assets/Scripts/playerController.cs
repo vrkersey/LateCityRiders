@@ -70,6 +70,8 @@ public class playerController : MonoBehaviour
         rb = player.GetComponent<Rigidbody>();
         thePlayer = GetComponent<IPlayer>();
 
+        //thePlayer.SetcTransform(cameraSpawned.transform);
+
         originalRotation = transform.localRotation;
 
         EnterCar(StartCar.GetComponent<Collider>());
@@ -102,8 +104,15 @@ public class playerController : MonoBehaviour
             SpawnedPlayerGroup.transform.position = transform.position;
             if (rb)
             {
+                if(thePlayer.LookY() == -1)
+                {
+                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y -35, rb.velocity.z).normalized);
+                }
+                else
+                {
+                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y * thePlayer.LookY(), rb.velocity.z).normalized);
 
-                SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y * thePlayer.LookY(), rb.velocity.z).normalized);
+                }
             }
         }
         

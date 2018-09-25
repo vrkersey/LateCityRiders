@@ -23,4 +23,6 @@ public interface IPlayer {
     int GetCharacter();
 
     float LookY();
+
+    void SetcTransform(Transform cam);
 }

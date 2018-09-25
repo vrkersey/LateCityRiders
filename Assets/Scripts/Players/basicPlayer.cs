@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class basicPlayer : MonoBehaviour, IPlayer {
 
-    private Transform cTransform;
+    public Transform cTransform;
 
     //characters
     //NEW: Added selected char, which uses playerprefs.
@@ -51,6 +51,11 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
         //CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
         
+    }
+
+    public void SetcTransform(Transform cam)
+    {
+        cTransform = cam;
     }
 
     void Update()
@@ -190,6 +195,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         currentRB = rb;
         //Rigidbody carRB = car.GetComponent<Rigidbody>();
         Driving_Controls CarControl = car.GetComponent<Driving_Controls>();
+        
         float CarSpeed = Mathf.Abs(CarControl.speed);
         float SpeedBoost = (CarSpeed / (CarControl.maxSpeed * 0.8f));
         maxSpeedThisJump = Mathf.Max(CarSpeed * SpeedBoost, 3f);
@@ -201,7 +207,9 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
         //add velocity
         rb.velocity += new Vector3(car.transform.GetComponent<Rigidbody>().velocity.x, 0, car.transform.GetComponent<Rigidbody>().velocity.z) * CarSpeed * SpeedBoost;
-
+        Debug.Log("wtf" + CarSpeed);
+        Debug.Log("wtf" + SpeedBoost);
+        Debug.Log("wtf" + rb.velocity);
         //reset ammo
         SpecialsLeft = CharacterSpecialAmmo;
 
@@ -261,6 +269,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         Vector3 forward = (this.transform.position - cTransform.position);
         forward.y = 0;
         forward = forward.normalized;
+        Debug.Log("forward " + forward);
         return forward;
     }
 
@@ -313,9 +322,9 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     public float LookY()
     {
-        if(CharacterSelect == Character.Firework && SpecialsLeft == 0 && rocketTimer > 0)
+        if(CharacterSelect == Character.Firework && SpecialsLeft == 0)
         {
-            return 1f;
+            return -1f;
         }
         else if (CharacterSelect == Character.Karate && SpecialsLeft == 0)
         {
