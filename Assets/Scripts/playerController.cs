@@ -97,12 +97,16 @@ public class playerController : MonoBehaviour
         Mouse_Input();
         UpdateAudio();
         nextCarTimer -= Time.deltaTime;
-        SpawnedPlayerGroup.transform.position = transform.position;
-        if (rb)
+        if (SpawnedPlayerGroup.activeSelf)
         {
+            SpawnedPlayerGroup.transform.position = transform.position;
+            if (rb)
+            {
 
-            SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y * thePlayer.LookY(), rb.velocity.z).normalized);
+                SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y * thePlayer.LookY(), rb.velocity.z).normalized);
+            }
         }
+        
 
         if (!inCar && !IsKilled)
         {
@@ -175,6 +179,7 @@ public class playerController : MonoBehaviour
             thePlayer.exitVehicle(rb, car);
             grounded = false;
             //GetComponent<MeshRenderer>().enabled = true;
+            SpawnedPlayerGroup.SetActive(true);
             PlayerMesh.SetActive(true);
             car.gameObject.GetComponent<Driving_Controls>().PlayerInCar = false;
             inCar = false;
@@ -253,6 +258,7 @@ public class playerController : MonoBehaviour
 
     IEnumerator WaitToRagdoll(Vector3 impactVelocity, Vector3 hitNormal)
     {
+        
         PlayerMesh.SetActive(false);
         DropShadow.SetActive(false);
         RagdollPrefab.SetActive(true);
@@ -303,6 +309,7 @@ public class playerController : MonoBehaviour
         control = 0;
         car = other.gameObject;
         GetComponent<MeshRenderer>().enabled = false;
+        SpawnedPlayerGroup.SetActive(false);
         PlayerMesh.SetActive(false);
         other.gameObject.GetComponent<Driving_Controls>().PlayerInCar = true;
 
