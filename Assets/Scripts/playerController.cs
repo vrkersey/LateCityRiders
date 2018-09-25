@@ -33,6 +33,7 @@ public class playerController : MonoBehaviour
     bool inCar = true;
     public GameObject PlayerMesh;
     public GameObject RagdollPrefab;
+    public Rigidbody RagdollPelvis;
     GameObject car;
     public AudioSource soundEffects;
     public AudioSource carSound;
@@ -104,7 +105,14 @@ public class playerController : MonoBehaviour
             transform.position = car.transform.position + car.GetComponent<Driving_Controls>().PlayerPositionInCar;
             carSound.UnPause();
             DropShadow.SetActive(false);
+            if (IsKilled)
+            {
+                Debug.Log("lloking");
+                cameraSpawned.transform.LookAt(RagdollPelvis.transform);
+                cameraSpawned.transform.position += (RagdollPelvis.transform.position - cameraSpawned.transform.position).normalized * ((1f * (RagdollPelvis.transform.position - cameraSpawned.transform.position).magnitude) -2f) * Time.deltaTime;
+            }
         }
+        
     }
 
     private void Keyboard_Input()
@@ -233,15 +241,17 @@ public class playerController : MonoBehaviour
         return Mathf.Clamp(angle, min, max);
     }
     
-    IEnumerator WaitToRagdoll()
+    IEnumerator WaitToRagdoll(Vector3 impactVelocity)
     {
         PlayerMesh.SetActive(false);
         DropShadow.SetActive(false);
         RagdollPrefab.SetActive(true);
         RagdollPrefab.transform.parent = null;
+        Debug.Log(impactVelocity);
+        RagdollPelvis.velocity = impactVelocity * 3f;
         cameraSpawned.transform.parent = null;
-        cameraSpawned.transform.LookAt(RagdollPrefab.transform);
-        yield return new WaitForSeconds(2f);
+        
+        yield return new WaitForSeconds(6f);
         SceneManager.LoadScene("MainMenu");
     }
     
@@ -252,7 +262,7 @@ public class playerController : MonoBehaviour
 
             IsKilled = true;
             soundEffects.PlayOneShot(killSound);
-            StartCoroutine(WaitToRagdoll());
+            StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity));
             
         }
 
@@ -260,7 +270,7 @@ public class playerController : MonoBehaviour
         if (other.gameObject.CompareTag("Goal"))
         {
             Debug.Log("goal");
-            StartCoroutine(WaitToRagdoll());
+            StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity));
         }
     }
 
