@@ -48,6 +48,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     void Start()
     {
+        Debug.Log("try to get camera");
         cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
         //CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
         
@@ -269,7 +270,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         Vector3 forward = (this.transform.position - cTransform.position);
         forward.y = 0;
         forward = forward.normalized;
-        Debug.Log("forward " + forward);
+        //Debug.Log("forward " + forward);
         return forward;
     }
 

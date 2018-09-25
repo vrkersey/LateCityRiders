@@ -60,8 +60,11 @@ public class playerController : MonoBehaviour
     {
         deathcammultiplier = 0f;
         player = transform;
+        Debug.Log("about to spawn cam");
         cameraSpawned = Instantiate(cameraPrefab);
+        Debug.Log("spawned cam " + cameraSpawned);
         cameraSpawned.transform.parent = player;
+        Debug.Log("parented cam " + cameraSpawned.transform.parent);
 
         cameraSpawned.transform.localPosition = cameraPrefab.transform.position;
         cameraSpawned.transform.localRotation = cameraPrefab.transform.rotation;
