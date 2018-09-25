@@ -77,7 +77,7 @@ public class playerController : MonoBehaviour
 
         originalRotation = transform.localRotation;
 
-        EnterCar(StartCar.GetComponent<Collider>());
+        EnterCar(StartCar.GetComponent<Collider>(), true);
 
         switch (thePlayer.GetCharacter())
         {
@@ -188,6 +188,7 @@ public class playerController : MonoBehaviour
             }
 
             soundEffects.PlayOneShot(jumpSound);
+            car.GetComponent<Driving_Controls>().broke = true;
             thePlayer.exitVehicle(rb, car);
             grounded = false;
             //GetComponent<MeshRenderer>().enabled = true;
@@ -316,15 +317,16 @@ public class playerController : MonoBehaviour
         //if (other.gameObject.CompareTag("Car") && !inCar && nextCarTimer <= 0f)
         if (other.gameObject.CompareTag("Car") && !inCar && player.transform.GetComponent<Rigidbody>().velocity.y <0)
         {
-            EnterCar(other);
+            EnterCar(other, false);
         }
     }
 
-    void EnterCar(Collider other)
+    void EnterCar(Collider other, bool first)
     {
         grounded = true;
         control = 0;
         car = other.gameObject;
+        
         GetComponent<MeshRenderer>().enabled = false;
         SpawnedPlayerGroup.SetActive(false);
         PlayerMesh.SetActive(false);
@@ -343,8 +345,11 @@ public class playerController : MonoBehaviour
         //Debug.Log("carboost " + thePlayer.GetHorVelocityCheck().magnitude / 2);
         car.GetComponent<Driving_Controls>().speed = thePlayer.GetHorVelocityCheck().magnitude / 2;
         car.GetComponent<Driving_Controls>().maxSpeed = Mathf.Max(car.GetComponent<Driving_Controls>().maxSpeed, car.GetComponent<Driving_Controls>().speed + 15);
-
-        car.GetComponent<NavMeshAgent>().enabled = false;
+        if (!first)
+        {
+            car.GetComponent<Driving_Controls>().broke = true;
+        }
+        //car.GetComponent<NavMeshAgent>().enabled = false;
 
         car.transform.rotation = player.transform.rotation;
         car.transform.eulerAngles = new Vector3(car.transform.eulerAngles.x * 0, car.transform.eulerAngles.y, car.transform.eulerAngles.z);

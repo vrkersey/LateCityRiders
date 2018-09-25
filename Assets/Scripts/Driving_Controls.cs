@@ -10,6 +10,13 @@ public class Driving_Controls : MonoBehaviour
     private bool playerInCar = false;
     public bool PlayerInCar { get { return playerInCar; } set { playerInCar = value; } }
 
+    public GameObject glass1;
+    public GameObject glass2;
+    public GameObject glass3;
+    public GameObject glass4;
+    public GameObject glass5;
+    public bool broke;
+
     //NEW: Set in inspector to determine what type of vehicle we're dealing with.
     //Currently either "Plow" or "Basic"
     public enum Vehicle { Basic = 0, Plow};
@@ -47,9 +54,58 @@ public class Driving_Controls : MonoBehaviour
     {
         if (playerInCar) {
             //Debug.Log("speed " + speed);
-           // Debug.Log("max speed " + maxSpeed);
+            // Debug.Log("max speed " + maxSpeed);
+            
         }
-        
+        if (broke)
+        {
+            if(glass1 != null)
+            {
+                glass1.GetComponent<Rigidbody>().isKinematic = false;
+                //glass1.GetComponent<Rigidbody>().useGravity = true;
+                glass1.GetComponent<BoxCollider>().isTrigger = false;
+                glass1.transform.parent = null;
+            }
+            if (glass2 != null)
+            {
+                glass2.GetComponent<Rigidbody>().isKinematic = false;
+                //glass2.GetComponent<Rigidbody>().useGravity = true;
+                glass2.GetComponent<BoxCollider>().isTrigger = false;
+                glass2.transform.parent = null;
+            }
+            if (glass3  != null)
+            {
+                glass3.GetComponent<Rigidbody>().isKinematic = false;
+                //glass3.GetComponent<Rigidbody>().useGravity = true;
+                glass3.GetComponent<BoxCollider>().isTrigger = false;
+                glass3.transform.parent = null;
+            }
+            if (glass4 != null)
+            {
+                glass4.GetComponent<Rigidbody>().isKinematic = false;
+                //glass4.GetComponent<Rigidbody>().useGravity = true;
+                glass4.GetComponent<BoxCollider>().isTrigger = false;
+                glass4.transform.parent = null;
+
+            }
+            if (glass5 != null)
+            {
+                glass5.GetComponent<Rigidbody>().isKinematic = false;
+                //glass5.GetComponent<Rigidbody>().useGravity = true;
+                glass5.GetComponent<BoxCollider>().isTrigger = false;
+                glass5.transform.parent = null;
+            }
+            
+
+            
+
+            
+
+            
+
+            
+
+        }
 
         if (PlayerInCar)
             KeyPress();
