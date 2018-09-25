@@ -13,7 +13,11 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     //character variables
 
+    //businessman
+    public GameObject briefcasetospawn;
+
     //karate
+    public float magStorage;
     private float timeInAir = -1;
 
     //firework
@@ -46,9 +50,14 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     //const float MaxSpeedForTest = 
     Rigidbody currentRB;
 
+    float jumpholdtimer;
+    float jumpholdlimit = 0.25f;
+    Vector3 jumpAdd;
+    Vector3 jumpAddTo;
+
     void Start()
     {
-        Debug.Log("try to get camera");
+        //Debug.Log("try to get camera");
         cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
         //CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
         
@@ -64,8 +73,18 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         //Debug.Log("maxspeedthisjump" + maxSpeedThisJump);
         
         
+        
         if (currentRB)
         {
+
+            if (jumpholdtimer > 0)
+            {
+                jumpholdtimer -= Time.deltaTime;
+                jumpAddTo += jumpAdd * Time.deltaTime / jumpholdlimit;
+                currentRB.velocity = new Vector3(currentRB.velocity.x, jumpAddTo.y, currentRB.velocity.z);
+            }
+
+
             ForceToAdd = ForceToAdd.normalized;
 
             //rocket movement
@@ -106,7 +125,11 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             //normal movement
             else
             {
-                rocketModel.SetActive(false);
+                if(CharacterSelect == Character.Firework)
+                {
+
+                    rocketModel.SetActive(false);
+                }
 
                 //Debug.Log(currentRB.velocity.magnitude);
                 //Debug.Log(ForceToAdd);
@@ -204,21 +227,24 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
 
         //add jump
-        rb.velocity = new Vector3(0f, ((CarSpeed / 4) * SpeedBoost) + 5, 0f);
+        jumpAdd = new Vector3(0f, ((CarSpeed / 4) * SpeedBoost), 0f);
+        jumpholdtimer = jumpholdlimit;
+        jumpAddTo = new Vector3(0, +5, 0);
 
         //add velocity
         rb.velocity += new Vector3(car.transform.GetComponent<Rigidbody>().velocity.x, 0, car.transform.GetComponent<Rigidbody>().velocity.z) * CarSpeed * SpeedBoost;
-        Debug.Log("wtf" + CarSpeed);
-        Debug.Log("wtf" + SpeedBoost);
-        Debug.Log("wtf" + rb.velocity);
         //reset ammo
         SpecialsLeft = CharacterSpecialAmmo;
 
         //reset specials
         CharAnim.SetBool("Is_Special", false);
-        Debug.Log("reset");
         timeInAir = -1;
         rocketTimer = -1f;
+    }
+
+    public void releaseJump(Rigidbody rb)
+    {
+        jumpholdtimer = 0f;
     }
 
     public void useSpecial(Rigidbody rb){
@@ -228,11 +254,24 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         {
             if (SpecialsLeft > 0)
             {
-                Debug.Log("use double jump");
+                GameObject b = Instantiate(briefcasetospawn, transform.position - Vector3.up * 1f, CharAnim.transform.rotation);
+                Debug.Log("CharAnim.transform.rotation " + CharAnim.transform.rotation);
+                //b.transform.LookAt(GetHorVelocityCheck());
+                //b.transform.rotation = transform.rotation;
+                //b.transform.eulerAngles = new Vector3(b.transform.eulerAngles.x, b.transform.eulerAngles.y + 90f, b.transform.eulerAngles.z);
+                //Debug.Log("brieflooki" + GetHorVelocityCheck());
+                Debug.Log("br2 " + b.transform.rotation);
+
+                //Debug.Log("use double jump");
                 CharAnim.SetTrigger("Special_Buisness");
                 SpecialsLeft -= 1;
-                rb.velocity = new Vector3(1 * rb.velocity.x / 4, Mathf.Max(rb.velocity.y, 0) + 10f, 1 * rb.velocity.z / 4);
+                rb.velocity = new Vector3(1 * rb.velocity.x / 4, 0, 1 * rb.velocity.z / 4);
+                jumpAdd = new Vector3(0, Mathf.Max(rb.velocity.y, 0) + 5, 0);
+                jumpholdtimer = jumpholdlimit;
+                jumpAddTo = new Vector3(0, +5f, 0);
                 maxSpeedThisJump *= .9f;
+
+                
             }
         }
         else if(CharacterSelect == Character.Karate)
@@ -243,6 +282,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 CharAnim.SetTrigger("Special_Karate");
                 SpecialsLeft -= 1;
                 Vector3 dir = GetHorVelocityCheck().normalized;
+                magStorage = rb.velocity.magnitude;
                 rb.velocity = new Vector3(0 * rb.velocity.x / 2, -50f, 0 * rb.velocity.z / 2);
                 rb.velocity += dir * 5f;
                 maxSpeedThisJump *= .5f;
@@ -286,7 +326,8 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             //Debug.Log("timeinair " + timeInAir);
             //Debug.Log("car boost " + HorVelocityCheck.magnitude * 5f);
             //Debug.Log("car boost 2 " + HorVelocityCheck.magnitude * 5f * timeInAir);
-            return HorVelocityCheck * 3.5f * timeInAir * timeInAir;
+            Debug.Log("car boost 2 " + (HorVelocityCheck.normalized * magStorage * 1.3f));
+            return HorVelocityCheck.normalized * magStorage * 1.3f;
         }
         if (CharacterSelect == Character.Firework && SpecialsLeft == 0)
         {
@@ -313,6 +354,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
     public void EnterVehicleCleanUp()
     {
+        if(Character.Firework == CharacterSelect)
         rocketModel.SetActive(false);
     }
 

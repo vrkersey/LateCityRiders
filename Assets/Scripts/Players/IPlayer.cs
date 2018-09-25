@@ -12,6 +12,8 @@ public interface IPlayer {
 
     void useSpecial(Rigidbody rb);
 
+    void releaseJump(Rigidbody rb);
+
     Vector3 GetHorVelocityCheck();
 
     bool IsRocketMode();

@@ -60,11 +60,11 @@ public class playerController : MonoBehaviour
     {
         deathcammultiplier = 0f;
         player = transform;
-        Debug.Log("about to spawn cam");
+        //Debug.Log("about to spawn cam");
         cameraSpawned = Instantiate(cameraPrefab);
-        Debug.Log("spawned cam " + cameraSpawned);
+        //Debug.Log("spawned cam " + cameraSpawned);
         cameraSpawned.transform.parent = player;
-        Debug.Log("parented cam " + cameraSpawned.transform.parent);
+        //Debug.Log("parented cam " + cameraSpawned.transform.parent);
 
         cameraSpawned.transform.localPosition = cameraPrefab.transform.position;
         cameraSpawned.transform.localRotation = cameraPrefab.transform.rotation;
@@ -109,11 +109,11 @@ public class playerController : MonoBehaviour
             {
                 if(thePlayer.LookY() == -1)
                 {
-                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y -35, rb.velocity.z).normalized);
+                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y -35, rb.velocity.z) + transform.forward * 0.5f);
                 }
                 else
                 {
-                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y * thePlayer.LookY(), rb.velocity.z).normalized);
+                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y  * thePlayer.LookY(), rb.velocity.z) + transform.forward * 0.5f);
 
                 }
             }
@@ -206,6 +206,11 @@ public class playerController : MonoBehaviour
             // if player's special is double
             if(thePlayer.GetSpecialsLeft() > 0)
             soundEffects.PlayOneShot(doubleSound);
+        }
+        else if ((Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.JoystickButton0)) && !grounded)
+        {
+            thePlayer.releaseJump(rb);
+            
         }
     }
 
