@@ -41,6 +41,6 @@ public class MenuSelect : MonoBehaviour
     }
     public void Begin()
     {
-        SceneManager.LoadScene("First Playable");
+        SceneManager.LoadScene("Level1");
     }
 }

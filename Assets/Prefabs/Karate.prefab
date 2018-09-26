@@ -7439,7 +7439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1758091562521636
 GameObject:
   m_ObjectHideFlags: 1
@@ -8416,6 +8416,23 @@ GameObject:
   - component: {fileID: 4301026967090458}
   m_Layer: 0
   m_Name: polySurface113
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1867977928635862
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4139903388899554}
+  - component: {fileID: 65802934299161378}
+  - component: {fileID: 114123597349261554}
+  m_Layer: 0
+  m_Name: Crash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9692,6 +9709,7 @@ Transform:
   - {fileID: 4464629351923270}
   - {fileID: 4976754711727210}
   - {fileID: 4382215363822058}
+  - {fileID: 4139903388899554}
   m_Father: {fileID: 4195975960162380}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
@@ -10411,6 +10429,19 @@ Transform:
   m_Father: {fileID: 4176991688551102}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4139903388899554
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1867977928635862}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4040016125783604}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4141954834412492
 Transform:
   m_ObjectHideFlags: 1
@@ -10912,7 +10943,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1757294563082786}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 276.81, y: 6.7699995, z: -57.96}
+  m_LocalPosition: {x: 0, y: 6.17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4040016125783604}
@@ -19572,8 +19603,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.8086991, y: 2.0166035, z: 9.446697}
-  m_Center: {x: 0.0014338493, y: 0.50830173, z: 0.0146586895}
+  m_Size: {x: 3.4465423, y: 2.0166035, z: 8.226217}
+  m_Center: {x: 0.012083411, y: 0.50830173, z: -0.33419633}
 --- !u!65 &65120591963068776
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -19596,8 +19627,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.8626125, y: 1.5681071, z: 9.49033}
-  m_Center: {x: -0.02669847, y: -0.18831897, z: 0.000042438507}
+  m_Size: {x: 3.4529362, y: 1.5681071, z: 8.177539}
+  m_Center: {x: 0.007243514, y: -0.18831897, z: -0.30306292}
 --- !u!65 &65262444144436742
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -19646,6 +19677,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 16.204388, y: 4.096857, z: 8.543479}
   m_Center: {x: -0.000030517578, y: 0.00016975401, z: -0.000035285957}
+--- !u!65 &65802934299161378
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1867977928635862}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.7754717, y: 1, z: 8.781588}
+  m_Center: {x: 0.02677846, y: 0, z: -0.09177995}
 --- !u!65 &65843558692824668
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -20276,6 +20319,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114123597349261554
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1867977928635862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ebffb425e4f6c45abdb072a35c6f13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crashed: 0
 --- !u!114 &114154650134128626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -20314,6 +20369,7 @@ MonoBehaviour:
   maxSpeed: 0
   turnSpeed: 0
   grounded: 1
+  crash: {fileID: 1867977928635862}
   glass1: {fileID: 1483786096604660}
   glass2: {fileID: 1181206520163328}
   glass3: {fileID: 1886273574937260}
@@ -22758,7 +22814,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.15784633, y: -0.0000032931566, z: 0.000007368624}
+  m_ConnectedAnchor: {x: -0.15784955, y: 0.0000011846423, z: 0.000002413988}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:

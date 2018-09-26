@@ -54,6 +54,7 @@ public class playerController : MonoBehaviour
     private bool IsKilled;
 
     float deathcammultiplier;
+    bool carkilled;
 
     // Use this for initialization
     void Start()
@@ -98,6 +99,15 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!IsKilled && carkilled && !inCar)
+        {
+            IsKilled = true;
+            soundEffects.PlayOneShot(killSound);
+            StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity, Vector3.up * 1f));
+            
+        }
+
+
         Keyboard_Input();
         Mouse_Input();
         UpdateAudio();
@@ -127,8 +137,12 @@ public class playerController : MonoBehaviour
         }
         else
         {
-            transform.position = car.transform.position + car.GetComponent<Driving_Controls>().PlayerPositionInCar;
-            carSound.UnPause();
+            if (!IsKilled)
+            {
+                transform.position = car.transform.position + car.GetComponent<Driving_Controls>().PlayerPositionInCar;
+                carSound.UnPause();
+            }
+            
             DropShadow.SetActive(false);
             if (IsKilled)
             {
@@ -179,7 +193,7 @@ public class playerController : MonoBehaviour
             thePlayer.moveRight(rb, 0);
         }
         //exit vehicle
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && grounded)
+        if (((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && grounded || ( car && car.transform.GetComponent<Driving_Controls>().crash.transform.GetComponent<crash>().crashed) ))
         {
             //player.parent = null;
             if (rb == null)
@@ -198,6 +212,13 @@ public class playerController : MonoBehaviour
             inCar = false;
             nextCarTimer = nextCarDelay;
             player.transform.GetComponent<SphereCollider>().isTrigger = false;
+            if((car && car.transform.GetComponent<Driving_Controls>().crash.transform.GetComponent<crash>().crashed)){
+                carkilled = true;
+            }
+            car = null;
+
+
+
         }
         //special
         else if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && !grounded)
@@ -281,9 +302,17 @@ public class playerController : MonoBehaviour
         DropShadow.SetActive(false);
         RagdollPrefab.SetActive(true);
         RagdollPrefab.transform.parent = null;
-        RagdollPrefab.transform.position += hitNormal * 2 - Vector3.up/2;
-        //Debug.Log(impactVelocity);
-        RagdollPelvis.velocity = (new Vector3(impactVelocity.x, 0, impactVelocity.z) + (hitNormal * ((impactVelocity.magnitude / 4 ) +3f) )) * 4f;
+        //if (hitNormal.magnitude != 0)
+        //{
+            RagdollPrefab.transform.position += hitNormal * 2 - Vector3.up / 2;
+            //Debug.Log(impactVelocity);
+            RagdollPelvis.velocity = (new Vector3(impactVelocity.x, 0, impactVelocity.z) + (hitNormal * ((impactVelocity.magnitude / 4) + 3f))) * 4f;
+        //}
+        //else
+        //{/
+        //    RagdollPrefab.transform.position += Vector3.up * 2;
+        //}
+        
         cameraSpawned.transform.parent = null;
 
         Debug.Log("death " + Mathf.Min(3f + impactVelocity.magnitude / 15, 10f));
@@ -293,7 +322,7 @@ public class playerController : MonoBehaviour
     
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Kill Zone"))
+        if (other.gameObject.CompareTag("Kill Zone") && !IsKilled)
         {
 
             IsKilled = true;
@@ -303,7 +332,7 @@ public class playerController : MonoBehaviour
         }
 
         //NEW: Ends the level with a success. For prototype it simply restarts stage.
-        if (other.gameObject.CompareTag("Goal"))
+        if (other.gameObject.CompareTag("Goal") && !IsKilled)
         {
             Debug.Log("goal");
             StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity, other.contacts[0].normal));
@@ -323,10 +352,17 @@ public class playerController : MonoBehaviour
 
     void EnterCar(Collider other, bool first)
     {
+        
+
         grounded = true;
         control = 0;
         car = other.gameObject;
-        
+
+        if (car && !first&& !car.transform.GetComponent<Driving_Controls>().broke)
+        {
+            soundEffects.PlayOneShot(jumpSound);
+        }
+
         GetComponent<MeshRenderer>().enabled = false;
         SpawnedPlayerGroup.SetActive(false);
         PlayerMesh.SetActive(false);

@@ -10,6 +10,8 @@ public class Driving_Controls : MonoBehaviour
     private bool playerInCar = false;
     public bool PlayerInCar { get { return playerInCar; } set { playerInCar = value; } }
 
+    public GameObject crash;
+
     public GameObject glass1;
     public GameObject glass2;
     public GameObject glass3;
@@ -44,7 +46,7 @@ public class Driving_Controls : MonoBehaviour
             slowDown = 0.15f;
         }
         maxSpeed = 60f;
-        turnSpeed = 0.8f;
+        turnSpeed = 1.6f;
         grounded = false;
 
     }
@@ -52,6 +54,12 @@ public class Driving_Controls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (crash.GetComponent<crash>().crashed)
+        {
+            broke = true;
+            transform.gameObject.tag = "Kill Zone";
+        }
+
         if (playerInCar) {
             //Debug.Log("speed " + speed);
             // Debug.Log("max speed " + maxSpeed);
@@ -118,7 +126,7 @@ public class Driving_Controls : MonoBehaviour
         }
 
         //set velocity to speed
-        if (grounded && playerInCar)
+        if (grounded && playerInCar && !crash.transform.GetComponent<crash>().crashed)
         {
             transform.GetComponent<Rigidbody>().velocity = new Vector3(speed * transform.forward.x, transform.GetComponent<Rigidbody>().velocity.y, speed * transform.forward.z);
             //transform.GetComponent<Rigidbody>().velocity = speed * transform.forward;
