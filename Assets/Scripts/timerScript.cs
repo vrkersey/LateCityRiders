@@ -18,7 +18,8 @@ public class timerScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        timeRemaining = startTime > 0 ? startTime - Time.timeSinceLevelLoad : 0;
+        if( !GameObject.FindGameObjectWithTag("Player").GetComponent<playerController>().win)
+        timeRemaining = startTime >= 0 ? startTime + Time.timeSinceLevelLoad : 0;
         int minutes = (int)timeRemaining / 60;
         int seconds = (int)timeRemaining % 60;
 

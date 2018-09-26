@@ -358,7 +358,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     {
         if(CharacterSelect == Character.BusinessMan)
         {
-            return HorVelocityCheck * 1.8f;
+            return HorVelocityCheck * 1.5f;
         }
         if(CharacterSelect == Character.Karate && SpecialsLeft == 0)
         {
@@ -367,7 +367,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
             //Debug.Log("car boost " + HorVelocityCheck.magnitude * 5f);
             //Debug.Log("car boost 2 " + HorVelocityCheck.magnitude * 5f * timeInAir);
             Debug.Log("car boost 2 " + (HorVelocityCheck.normalized * magStorage * 1.3f));
-            return HorVelocityCheck.normalized * magStorage * 1.3f;
+            return HorVelocityCheck.normalized * magStorage * 1.5f;
         }
         if (CharacterSelect == Character.Firework && SpecialsLeft == 0)
         {

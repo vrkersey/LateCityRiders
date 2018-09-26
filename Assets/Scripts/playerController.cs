@@ -18,7 +18,7 @@ public class playerController : MonoBehaviour
     private float rotationY = 0F;
     private Quaternion originalRotation;
 
-    bool win;
+    public bool win;
 
     Transform player;
 
@@ -54,7 +54,7 @@ public class playerController : MonoBehaviour
     float nextCarTimer;
     public IPlayer thePlayer;
 
-    private bool IsKilled;
+    public  bool IsKilled;
 
     float deathcammultiplier;
     bool carkilled;
@@ -330,7 +330,7 @@ public class playerController : MonoBehaviour
     
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Kill Zone") && !IsKilled)
+        if (other.gameObject.CompareTag("Kill Zone") && !IsKilled && !win)
         {
 
             IsKilled = true;
@@ -396,7 +396,8 @@ public class playerController : MonoBehaviour
         }
         //car.GetComponent<NavMeshAgent>().enabled = false;
 
-        car.transform.rotation = player.transform.rotation;
+        car.transform.rotation = PlayerMesh.transform.rotation;
+        car.transform.eulerAngles = new Vector3(0, car.transform.eulerAngles.y, 0);
         car.transform.eulerAngles = new Vector3(car.transform.eulerAngles.x * 0, car.transform.eulerAngles.y, car.transform.eulerAngles.z);
 
         thePlayer.EnterVehicleCleanUp();
