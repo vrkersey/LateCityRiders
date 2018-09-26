@@ -10,7 +10,7 @@ public class Driving_Controls : MonoBehaviour
     public float acceleration, speed, slowDown, maxSpeed, turnSpeed;
     private Vector3 temp;
     public bool grounded;
-    private bool playerInCar = false;
+    public bool playerInCar = false;
     public bool PlayerInCar { get { return playerInCar; } set { playerInCar = value; } }
 
     public GameObject crash;
@@ -141,14 +141,24 @@ public class Driving_Controls : MonoBehaviour
         {
             if (!playerInCar && !LightCar && !broke)
             {
-                if(!Physics.Raycast(transform.position, transform.forward, 5f + AISpeed/20))
+                RaycastHit hit;
+                if(Physics.Raycast(transform.position, transform.forward, out hit, 5f + AISpeed/20) )
                 {
+                    if(hit.transform.GetComponent<Driving_Controls>() && !hit.transform.GetComponent<Driving_Controls>().playerInCar)
+                    {
+                        transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    }
+                    else
+                    {
 
-                    transform.GetComponent<Rigidbody>().velocity = transform.forward * AISpeed;
+                        transform.GetComponent<Rigidbody>().velocity = transform.forward * AISpeed;
+                    }
+                    
                 }
                 else
                 {
-                    transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+                    transform.GetComponent<Rigidbody>().velocity = transform.forward * AISpeed;
                 }
             }
             else

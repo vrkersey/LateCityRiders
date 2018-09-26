@@ -24,7 +24,7 @@ public class CarSpawner : MonoBehaviour {
         }
         else
         {
-            if (!dontdestroy)
+            if (!dontdestroy && cartokill && !cartokill.transform.GetComponent< Driving_Controls>().playerInCar)
             {
                 Destroy(cartokill);
 

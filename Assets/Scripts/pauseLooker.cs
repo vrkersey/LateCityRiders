@@ -18,7 +18,11 @@ public class pauseLooker : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            soundEffects.PlayOneShot(buttonClick);
+            if (soundEffects)
+            {
+
+                soundEffects.PlayOneShot(buttonClick);
+            }
             if (pauseMenu.activeSelf == true)
             {
                 pauseMenu.SetActive(false);

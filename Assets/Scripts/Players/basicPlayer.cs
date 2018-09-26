@@ -245,6 +245,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     public void releaseJump(Rigidbody rb)
     {
         jumpholdtimer = 0f;
+        rocketTimer = 0f;
     }
 
     public void useSpecial(Rigidbody rb){
