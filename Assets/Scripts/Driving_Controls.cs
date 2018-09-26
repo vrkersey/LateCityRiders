@@ -125,7 +125,7 @@ public class Driving_Controls : MonoBehaviour
 
         //ideally this will be done with a box cast(s) in the future
         grounded = false;
-        if (Physics.Raycast(transform.position, -transform.up, 5f))
+        if (Physics.Raycast(transform.position, -transform.up, 4f))
         {
             grounded = true;
         }
