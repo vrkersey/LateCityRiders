@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Driving_Controls : MonoBehaviour
 {
+    public bool LightCar;
+    public float AISpeed = 5f;
+
     public float acceleration, speed, slowDown, maxSpeed, turnSpeed;
     private Vector3 temp;
     public bool grounded;
@@ -54,6 +57,8 @@ public class Driving_Controls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         if (crash.GetComponent<crash>().crashed)
         {
             broke = true;
@@ -134,8 +139,24 @@ public class Driving_Controls : MonoBehaviour
         }
         else
         {
-            //leave it to physics in the air
-            speed = new Vector3(transform.GetComponent<Rigidbody>().velocity.x, 0, transform.GetComponent<Rigidbody>().velocity.z).magnitude;
+            if (!playerInCar && !LightCar && !broke)
+            {
+                if(!Physics.Raycast(transform.position, transform.forward, 5f + AISpeed/20))
+                {
+
+                    transform.GetComponent<Rigidbody>().velocity = transform.forward * AISpeed;
+                }
+                else
+                {
+                    transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                }
+            }
+            else
+            {
+                //leave it to physics in the air
+                speed = new Vector3(transform.GetComponent<Rigidbody>().velocity.x, 0, transform.GetComponent<Rigidbody>().velocity.z).magnitude;
+            }
+            
         }
         
     }
