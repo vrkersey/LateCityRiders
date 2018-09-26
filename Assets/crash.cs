@@ -20,7 +20,7 @@ public class crash : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Kill Zone") || other.gameObject.CompareTag("Car"))
+        if (other.gameObject.CompareTag("Kill Zone") || other.gameObject.CompareTag("Car") || other.gameObject.CompareTag("Goal"))
         {
             Debug.Log("crashed");
             crashed = true;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class playerController : MonoBehaviour
     private float rotationX = 0F;
     private float rotationY = 0F;
     private Quaternion originalRotation;
+
+    bool win;
 
     Transform player;
 
@@ -99,6 +102,11 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (win)
+        {
+            GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color = new Color(GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.r, GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.g, GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.b, GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.a +Time.deltaTime /3);
+        }
+
         if(!IsKilled && carkilled && !inCar)
         {
             IsKilled = true;
@@ -332,9 +340,10 @@ public class playerController : MonoBehaviour
         }
 
         //NEW: Ends the level with a success. For prototype it simply restarts stage.
-        if (other.gameObject.CompareTag("Goal") && !IsKilled)
+        if (other.gameObject.CompareTag("Goal"))
         {
             Debug.Log("goal");
+            win = true;
             StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity, other.contacts[0].normal));
         }
     }

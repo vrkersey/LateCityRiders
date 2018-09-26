@@ -30,6 +30,7 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     float rocketSpeedBoostFromPitch;
     float rocketSpeed;
     float newMaxSpeed;
+    float rocketgravity;
 
 
     //end character variables
@@ -102,7 +103,25 @@ public class basicPlayer : MonoBehaviour, IPlayer {
 
                 //currentRB.velocity = currentRB.velocity.normalized * (maxSpeedThisJump + rocketSpeedBoostFromPitch); original, no buildup
                 currentRB.velocity = currentRB.velocity.normalized * (rocketSpeed + rocketSpeedBoostFromPitch);
-                currentRB.velocity = new Vector3(currentRB.velocity.x, rocketPitch, currentRB.velocity.z);
+                if(rocketPitch > 0)
+                {
+                    rocketgravity += Time.deltaTime * (rocketPitch) / 1 ;
+                }
+                if(rocketPitch <= 0)
+                {
+                    //rocketgravity += Time.deltaTime * (rocketPitch / .1f);
+                    
+
+                }
+                rocketgravity -= Time.deltaTime * 10f;
+                if (rocketgravity <= 0)
+                {
+                    rocketgravity = 0;
+                }
+
+                Debug.Log(rocketgravity);
+                currentRB.velocity = new Vector3(currentRB.velocity.x / (rocketgravity * 0.1f + 1f), rocketPitch , currentRB.velocity.z / (rocketgravity * 0.1f + 1f));
+                transform.position -= Vector3.up * rocketgravity * Time.deltaTime;
 
                 //get new max speed
                 newMaxSpeed = Mathf.Max(rocketSpeed + rocketSpeedBoostFromPitch, newMaxSpeed);
@@ -119,6 +138,10 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                     rocketSpeed -= Time.deltaTime * 0.5f;
                 }
                 maxSpeedThisJump = rocketSpeed;
+                if(rocketTimer <= 0)
+                {
+                    currentRB.velocity = new Vector3(currentRB.velocity.x, rocketPitch - rocketgravity, currentRB.velocity.z);
+                }
                 //Debug.Log("rocketSpeed " + rocketSpeed);
                 //Debug.Log("newMaxSpeed " + newMaxSpeed);
             }
@@ -181,7 +204,15 @@ public class basicPlayer : MonoBehaviour, IPlayer {
                 rocketPitch = -rocketPitchMax;
             }
 
-            rocketSpeedBoostFromPitch -= rocketPitch / 0.5f * Time.deltaTime;
+            if(rocketPitch > 0)
+            {
+                rocketSpeedBoostFromPitch -= (rocketPitch - rocketgravity) / 1f * (Mathf.Abs( rocketSpeed / 50)) * Time.deltaTime;
+            }
+            else if (rocketPitch <= 0)
+            {
+                rocketSpeedBoostFromPitch -= (rocketPitch - rocketgravity) / 1f * (Mathf.Abs(rocketSpeed / 50)) * Time.deltaTime;
+            }
+            
             //if(rocketPitch > 0)
             //{
             //    rocketSpeedBoostFromPitch -= rocketPitch / 0.5f * Time.deltaTime;
@@ -240,12 +271,20 @@ public class basicPlayer : MonoBehaviour, IPlayer {
         CharAnim.SetBool("Is_Special", false);
         timeInAir = -1;
         rocketTimer = -1f;
+        rocketgravity = 0;
+        rocketSpeed = 0;
     }
 
     public void releaseJump(Rigidbody rb)
     {
         jumpholdtimer = 0f;
-        rocketTimer = 0f;
+
+        if(CharacterSelect == Character.Firework && rocketTimer >0)
+        {
+            currentRB.velocity = new Vector3(currentRB.velocity.x, rocketPitch - rocketgravity, currentRB.velocity.z);
+            rocketTimer = 0f;
+        }
+        
     }
 
     public void useSpecial(Rigidbody rb){

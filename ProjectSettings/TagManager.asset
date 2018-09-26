@@ -11,6 +11,7 @@ TagManager:
   - Plow
   - Blocks
   - RigidbodyPelvis
+  - win
   layers:
   - Default
   - TransparentFX
