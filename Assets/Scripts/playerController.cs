@@ -345,6 +345,7 @@ public class playerController : MonoBehaviour
         {
             Debug.Log("goal");
             win = true;
+            soundEffects.PlayOneShot(killSound);
             StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity, other.contacts[0].normal));
         }
     }
