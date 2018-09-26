@@ -325,6 +325,7 @@ public class playerController : MonoBehaviour
 
         Debug.Log("death " + Mathf.Min(3f + impactVelocity.magnitude / 15, 10f));
         yield return new WaitForSeconds(Mathf.Min( 3f + impactVelocity.magnitude/15, 10f));
+        //if(!win || win && GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.a >= 255)
         SceneManager.LoadScene("MainMenu");
     }
     
