@@ -25,6 +25,7 @@ public class Spawner : MonoBehaviour {
             default:
 
                 Debug.Log("no" + PlayerPrefs.GetInt("Character"));
+                Instantiate(BusinessMan, transform.position, transform.rotation);
                 break;
         }
     }

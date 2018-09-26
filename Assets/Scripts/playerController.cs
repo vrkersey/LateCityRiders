@@ -50,6 +50,8 @@ public class playerController : MonoBehaviour
     public AudioClip doubleSound;
     public AudioClip killSound;
 
+    public AudioClip winSound;
+
     float nextCarDelay = 1f;
     float nextCarTimer;
     public IPlayer thePlayer;
@@ -341,11 +343,11 @@ public class playerController : MonoBehaviour
         }
 
         //NEW: Ends the level with a success. For prototype it simply restarts stage.
-        if (other.gameObject.CompareTag("Goal"))
+        if (other.gameObject.CompareTag("Goal") && !win)
         {
             Debug.Log("goal");
             win = true;
-            soundEffects.PlayOneShot(killSound);
+            soundEffects.PlayOneShot(winSound);
             StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity, other.contacts[0].normal));
         }
     }

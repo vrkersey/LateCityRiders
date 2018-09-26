@@ -73,8 +73,11 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     {
         //Debug.Log("maxspeedthisjump" + maxSpeedThisJump);
         
-        
-        
+        if(!cTransform)
+        {
+            cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        }        
+
         if (currentRB)
         {
 
@@ -347,6 +350,10 @@ public class basicPlayer : MonoBehaviour, IPlayer {
     }
 
     private Vector3 calculateForward(){
+        if (!cTransform)
+        {
+            cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        }
         Vector3 forward = (this.transform.position - cTransform.position);
         forward.y = 0;
         forward = forward.normalized;

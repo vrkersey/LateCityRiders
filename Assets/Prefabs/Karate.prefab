@@ -19537,7 +19537,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 07921bd2d857ec04389f44ae45878769, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5661b3927a2e100409c4b77cf16c0a8d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -19727,7 +19727,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1dd7cc0673683144583ab257fdbdcdb2, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5661b3927a2e100409c4b77cf16c0a8d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -20133,6 +20133,7 @@ MonoBehaviour:
   stompSound: {fileID: 8300000, guid: 6e4d7fdf602f61041960792d28f3329b, type: 3}
   doubleSound: {fileID: 8300000, guid: 6e4d7fdf602f61041960792d28f3329b, type: 3}
   killSound: {fileID: 8300000, guid: df188a6c41f354a4287c356ee0f949f7, type: 3}
+  winSound: {fileID: 8300000, guid: cfe00bc0e77608b45b03035da0ee62f1, type: 3}
   IsKilled: 0
 --- !u!114 &114792939492001666
 MonoBehaviour:
