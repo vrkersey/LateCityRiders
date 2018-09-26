@@ -7,7 +7,7 @@ public class Driving_Controls : MonoBehaviour
     public bool LightCar;
     public float AISpeed = 5f;
 
-    public float acceleration, speed, slowDown, maxSpeed, turnSpeed;
+    public float acceleration, speed, slowDown, maxSpeed, turnSpeed, crashSpeed;
     private Vector3 temp;
     public bool grounded;
     public bool playerInCar = false;
@@ -33,6 +33,7 @@ public class Driving_Controls : MonoBehaviour
     void Start()
     {
         speed = 0;
+        crashSpeed = 10f;
         originalRotation = transform.rotation;
 
         //NEW: Sets variables for the plow vehicle.
@@ -57,12 +58,20 @@ public class Driving_Controls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
 
         if (crash.GetComponent<crash>().crashed)
         {
-            broke = true;
-            transform.gameObject.tag = "Kill Zone";
+            if (speed > crashSpeed)
+            {
+                broke = true;
+                transform.gameObject.tag = "Kill Zone";
+            }
+            else
+            {
+                crash.GetComponent<crash>().crashed = false;
+                speed = -1f;
+            }
         }
 
         if (playerInCar) {
