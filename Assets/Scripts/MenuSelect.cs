@@ -8,11 +8,17 @@ public class MenuSelect : MonoBehaviour
 {
     public GameObject DoubleJumpOutline, GroundPoundOutline, RocketOutline;
 	public int chara;
+    public GameObject rocketSelect;
+    public GameObject groundSelect;
+    public GameObject doubleSelect;
    
     void Start()
     {
         chara = -1;
         PlayerPrefs.SetInt("Character", -1);
+        groundSelect.SetActive(false);
+        doubleSelect.SetActive(false);
+        rocketSelect.SetActive(false);
     }
 
 	public void ChooseDoubleJump()
@@ -46,6 +52,44 @@ public class MenuSelect : MonoBehaviour
         {
 
             SceneManager.LoadScene("Level1");
+        }
+    }
+
+    public void ChooseChar(int integer)
+    {
+        chara += integer;
+        PlayerPrefs.SetInt("Character", chara);
+        if (chara == -2)
+        {
+            chara += 1;
+        }
+        if (chara == -1)
+        {
+            groundSelect.SetActive(false);
+            doubleSelect.SetActive(false);
+            rocketSelect.SetActive(false);
+        }
+        if (chara == 0)
+        {
+            groundSelect.SetActive(false);
+            doubleSelect.SetActive(true);
+            rocketSelect.SetActive(false);
+        }
+        if (chara == 1)
+        {
+            groundSelect.SetActive(true);
+            doubleSelect.SetActive(false);
+            rocketSelect.SetActive(false);
+        }
+        if (chara == 2)
+        {
+            groundSelect.SetActive(false);
+            doubleSelect.SetActive(false);
+            rocketSelect.SetActive(true);
+        }
+        if (chara == 3)
+        {
+            chara += -1;
         }
     }
 }
