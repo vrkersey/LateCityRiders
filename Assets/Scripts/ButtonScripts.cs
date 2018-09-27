@@ -28,4 +28,9 @@ public class ButtonScripts : MonoBehaviour {
         Application.Quit();
 #endif
     }
+
+    public void LoadScene(string name)
+    {
+        SceneManager.LoadScene(name);
+    }
 }

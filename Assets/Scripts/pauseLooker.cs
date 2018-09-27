@@ -10,7 +10,8 @@ public class pauseLooker : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -18,6 +19,8 @@ public class pauseLooker : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             if (soundEffects)
             {
 
