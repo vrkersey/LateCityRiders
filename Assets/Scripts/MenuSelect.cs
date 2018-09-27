@@ -51,7 +51,7 @@ public class MenuSelect : MonoBehaviour
         if(chara != -1)
         {
 
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene("Level1Version2");
         }
     }
 
