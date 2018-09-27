@@ -23,7 +23,7 @@ public class timerScript : MonoBehaviour {
         int minutes = (int)timeRemaining / 60;
         int seconds = (int)timeRemaining % 60;
 
-        string textTime = string.Format("{0:00}   {1:00}", minutes, seconds);
+        string textTime = string.Format("{0:00} : {1:00}", minutes, seconds);
         timeDisplay.text = textTime;
     }
 }
