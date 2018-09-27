@@ -33,7 +33,7 @@ public class Driving_Controls : MonoBehaviour
     void Start()
     {
         speed = 0;
-        crashSpeed = 10f;
+        crashSpeed = 0f;
         originalRotation = transform.rotation;
 
         //NEW: Sets variables for the plow vehicle.
