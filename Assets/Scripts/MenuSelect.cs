@@ -11,14 +11,22 @@ public class MenuSelect : MonoBehaviour
     public GameObject rocketSelect;
     public GameObject groundSelect;
     public GameObject doubleSelect;
-   
+    public GameObject rocketText;
+    public GameObject groundText;
+    public GameObject doubleText;
+
     void Start()
     {
-        chara = -1;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        chara = 0;
         PlayerPrefs.SetInt("Character", -1);
         groundSelect.SetActive(false);
-        doubleSelect.SetActive(false);
+        doubleSelect.SetActive(true);
         rocketSelect.SetActive(false);
+        groundText.SetActive(false);
+        doubleText.SetActive(true);
+        rocketText.SetActive(false);
     }
 
 	public void ChooseDoubleJump()
@@ -59,33 +67,36 @@ public class MenuSelect : MonoBehaviour
     {
         chara += integer;
         PlayerPrefs.SetInt("Character", chara);
-        if (chara == -2)
-        {
-            chara += 1;
-        }
         if (chara == -1)
         {
-            groundSelect.SetActive(false);
-            doubleSelect.SetActive(false);
-            rocketSelect.SetActive(false);
+            chara += 1;
         }
         if (chara == 0)
         {
             groundSelect.SetActive(false);
             doubleSelect.SetActive(true);
             rocketSelect.SetActive(false);
+            groundText.SetActive(false);
+            doubleText.SetActive(true);
+            rocketText.SetActive(false);
         }
         if (chara == 1)
         {
             groundSelect.SetActive(true);
             doubleSelect.SetActive(false);
             rocketSelect.SetActive(false);
+            groundText.SetActive(true);
+            doubleText.SetActive(false);
+            rocketText.SetActive(false);
         }
         if (chara == 2)
         {
             groundSelect.SetActive(false);
             doubleSelect.SetActive(false);
             rocketSelect.SetActive(true);
+            groundText.SetActive(false);
+            doubleText.SetActive(false);
+            rocketText.SetActive(true);
         }
         if (chara == 3)
         {
