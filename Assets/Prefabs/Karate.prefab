@@ -10881,7 +10881,7 @@ Transform:
   m_GameObject: {fileID: 1757294563082786}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 6.17, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.000001, y: 1, z: 1.000001}
   m_Children:
   - {fileID: 4040016125783604}
   - {fileID: 4644338777868542}
@@ -19442,7 +19442,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 51316e466b21eed45b37787c77332f4d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1636e899488f2814f8806085711c7b72, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.501
   m_Pitch: 1
@@ -20090,6 +20090,7 @@ MonoBehaviour:
   slowDown: 0
   maxSpeed: 0
   turnSpeed: 0
+  crashSpeed: 0
   grounded: 1
   playerInCar: 0
   crash: {fileID: 1867977928635862}
@@ -22540,7 +22541,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.15784955, y: 0.0000011846423, z: 0.000002413988}
+  m_ConnectedAnchor: {x: -0.15784948, y: 0.0000010877848, z: 0.0000025555491}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:

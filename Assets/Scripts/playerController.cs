@@ -268,24 +268,26 @@ public class playerController : MonoBehaviour
         if (!inCar)
         {
             carSound.Pause();
-            music1.volume = .3f;
-            music2.volume = .3f;
-            music3.volume = .3f;
-            windSound.UnPause();
-            if (rb != null)
-            {
-                windSound.volume = rb.velocity.magnitude / 200;
-                //print(rb.velocity.magnitude);
-            }
+            music1.volume = 1f;
+            music2.volume = 1f;
+            music3.volume = 1f;
+            windSound.volume = .3f;
+            //windSound.UnPause();
+            //if (rb != null)
+            //{
+            //    windSound.volume = rb.velocity.magnitude / 200;
+            //    //print(rb.velocity.magnitude);
+            //}
         }
         else
         {
             transform.position = car.transform.position + car.transform.up * 1f;
             carSound.UnPause();
-            music1.volume = 1f;
-            music2.volume = 1f;
-            music3.volume = 1f;
-            windSound.Pause();
+            music1.volume = .5f;
+            music2.volume = .5f;
+            music3.volume = .5f;
+            windSound.volume = .8f;
+            //windSound.Pause();
 
         }
     }

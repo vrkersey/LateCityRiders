@@ -8273,7 +8273,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 51316e466b21eed45b37787c77332f4d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1636e899488f2814f8806085711c7b72, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.501
   m_Pitch: 1
@@ -8783,6 +8783,7 @@ MonoBehaviour:
   slowDown: 0
   maxSpeed: 0
   turnSpeed: 0
+  crashSpeed: 0
   grounded: 1
   playerInCar: 0
   crash: {fileID: 1423821999719578}
