@@ -34,7 +34,6 @@ public class levelEditor : MonoBehaviour
 
         InformOrbs("ResetOrb", null);
         if (Active){
-            InformOrbs("SetSize", size);
             GameObject selectedObject = Selection.activeGameObject;
             if (selectedObject == null){
                 return;
@@ -46,6 +45,13 @@ public class levelEditor : MonoBehaviour
             if (selectedObject.name.Contains("LevelEditor")){
                 return;
             }
+            MeshFilter mf = selectedObject.GetComponent<MeshFilter>();
+            Mesh mesh = mf.sharedMesh;
+            Bounds bounds = mesh.bounds;
+            var bsize = mesh.bounds.size;
+            var scale = selectedObject.transform.localScale;
+            size = bsize.x * scale.x / 2;
+            InformOrbs("SetSize", size);
 
             SetOrbPosition(selectedObject);
             InformOrbs("SetObject", selectedObject);
@@ -54,6 +60,7 @@ public class levelEditor : MonoBehaviour
     }
 
     public GameObject[] RoadPrefabs { get { return roadPrefabs; }}
+
     private void SetOrbPosition(GameObject selectedObject)
     {
         Vector3 objPosition = selectedObject.transform.position;
