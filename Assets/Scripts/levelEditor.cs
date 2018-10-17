@@ -45,12 +45,6 @@ public class levelEditor : MonoBehaviour
             if (selectedObject.name.Contains("LevelEditor")){
                 return;
             }
-            MeshFilter mf = selectedObject.GetComponent<MeshFilter>();
-            Mesh mesh = mf.sharedMesh;
-            Bounds bounds = mesh.bounds;
-            var bsize = mesh.bounds.size;
-            var scale = selectedObject.transform.localScale;
-            size = bsize.x * scale.x / 2;
             InformOrbs("SetSize", size);
 
             SetOrbPosition(selectedObject);
