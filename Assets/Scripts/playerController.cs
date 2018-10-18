@@ -54,7 +54,7 @@ public class playerController : MonoBehaviour
 
     float nextCarDelay = 1f;
     float nextCarTimer;
-    public IPlayer thePlayer;
+    public basicPlayer thePlayer;
 
     public  bool IsKilled;
 
@@ -77,7 +77,7 @@ public class playerController : MonoBehaviour
 
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         rb = player.GetComponent<Rigidbody>();
-        thePlayer = GetComponent<IPlayer>();
+        thePlayer = GetComponent<basicPlayer>();
 
         //thePlayer.SetcTransform(cameraSpawned.transform);
 
