@@ -33,7 +33,7 @@ public class basicPlayer : MonoBehaviour {
     void Start()
     {
         //Debug.Log("try to get camera");
-        cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        //cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
         //CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
 
     }
@@ -55,22 +55,14 @@ public class basicPlayer : MonoBehaviour {
         if (currentRB)
         {
 
-            if (jumpholdtimer > 0)
-            {
-                jumpholdtimer -= Time.deltaTime;
-                jumpAddTo += jumpAdd * Time.deltaTime / jumpholdlimit;
-                currentRB.velocity = new Vector3(currentRB.velocity.x, jumpAddTo.y, currentRB.velocity.z);
-            }
+            //if (jumpholdtimer > 0)
+            //{
+            //    jumpholdtimer -= Time.deltaTime;
+            //    jumpAddTo += jumpAdd * Time.deltaTime / jumpholdlimit;
+            //    currentRB.velocity = new Vector3(currentRB.velocity.x, jumpAddTo.y, currentRB.velocity.z);
+            //}
 
-
-            ForceToAdd = ForceToAdd.normalized;
-
-            //normal movement
-
-            currentRB.AddForce(ForceToAdd * characterAcceleration);
-            ForceToAdd = Vector3.zero;
-
-            //max speed check, and reduce horizontal velocity if needed;
+            ////max speed check, and reduce horizontal velocity if needed;
             HorVelocityCheck = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
 
             if (HorVelocityCheck.magnitude > maxSpeedThisJump)
@@ -90,34 +82,34 @@ public class basicPlayer : MonoBehaviour {
 
     public void moveForward(Rigidbody rb, float value)
     {
-        ForceToAdd = new Vector3(ForceToAdd.x, ForceToAdd.y, ForceToAdd.z) + calculateForward() * value;
+        if (currentRB)
+        {
+            currentRB.AddForce(calculateForward() * value * characterAcceleration);
+        }
     }
 
     public void moveRight(Rigidbody rb, float value)
     {
-        ForceToAdd = new Vector3(ForceToAdd.x, ForceToAdd.y, ForceToAdd.z) + Vector3.Cross(Vector3.up, calculateForward()) * value;
+        if (currentRB)
+        {
+            currentRB.AddForce(Vector3.Cross(Vector3.up, calculateForward()) * value * characterAcceleration);
+        }
     }
 
-    public void exitVehicle(Rigidbody rb, GameObject car)
+    public void exitVehicle(Rigidbody rb, GameObject car, float holdTime)
     {
         currentRB = rb;
-        //Rigidbody carRB = car.GetComponent<Rigidbody>();
         Driving_Controls CarControl = car.GetComponent<Driving_Controls>();
-        Debug.Log(CarControl.speed);
+
         float CarSpeed = Mathf.Abs(CarControl.speed);
-        float SpeedBoost = (CarSpeed >= CarControl.maxSpeed * 0.8f ? CarSpeed * 1.2f : CarSpeed * 0.8f);
+        float SpeedBoost = (CarSpeed > (CarControl.maxSpeed * 0.8f)) ? 1.2f : .3f;
+        maxSpeedThisJump = Mathf.Max(CarSpeed * SpeedBoost, 3f);
+        float holdMult = Mathf.Max(holdTime / 1f, .5f);
 
-        //add jump
-        jumpAdd = new Vector3(0f, ((CarSpeed / 4) * SpeedBoost), 0f);
-        jumpholdtimer = jumpholdlimit;
-
-        //add velocity
-        rb.velocity += new Vector3(car.transform.GetComponent<Rigidbody>().velocity.x, 0, car.transform.GetComponent<Rigidbody>().velocity.z) * CarSpeed * SpeedBoost;
-        //reset ammo
-        SpecialsLeft = CharacterSpecialAmmo;
-
-        //reset specials
-        CharAnim.SetBool("Is_Special", false);
+        Vector3 carVeloctiy = car.transform.GetComponent<Rigidbody>().velocity;
+        carVeloctiy.y = 0f;
+        currentRB.velocity = carVeloctiy * SpeedBoost;
+        currentRB.AddForce(Vector3.up * 1000f * holdMult);
     }
 
     public void releaseJump(Rigidbody rb)
