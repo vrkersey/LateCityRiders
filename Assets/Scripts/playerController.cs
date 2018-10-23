@@ -54,7 +54,7 @@ public class playerController : MonoBehaviour
 
     float nextCarDelay = 1f;
     float nextCarTimer;
-    public IPlayer thePlayer;
+    public basicPlayer thePlayer;
 
     public  bool IsKilled;
 
@@ -64,6 +64,10 @@ public class playerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        GameObject levelEditor = GameObject.Find("LevelEditor");
+        if (levelEditor != null)
+            levelEditor.SetActive(false);
+
         deathcammultiplier = 0f;
         player = transform;
         //Debug.Log("about to spawn cam");
@@ -77,7 +81,7 @@ public class playerController : MonoBehaviour
 
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         rb = player.GetComponent<Rigidbody>();
-        thePlayer = GetComponent<IPlayer>();
+        thePlayer = GetComponent<basicPlayer>();
 
         //thePlayer.SetcTransform(cameraSpawned.transform);
 
