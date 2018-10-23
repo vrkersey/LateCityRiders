@@ -41,6 +41,7 @@ public class BasicCar : MonoBehaviour {
             }
         }
         Stablization();
+        Speedometer.ShowSpeed(rb.velocity.magnitude, 0, 100);
     }
 
     // 
