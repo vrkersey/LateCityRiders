@@ -371,6 +371,7 @@ public class playerController : MonoBehaviour
         if (other.gameObject.CompareTag("Car") && !inCar && player.transform.GetComponent<Rigidbody>().velocity.y <0)
         {
             EnterCar(other, false);
+            thePlayer.EnterVehicleAnimation();
         }
     }
 

@@ -11,42 +11,31 @@ public class basicPlayer : MonoBehaviour {
     public Animator CharAnim;
 
     public float characterAcceleration = 20f;
-    private float maxSpeedThisJump;
+    protected float maxSpeedThisJump;
 
-    private int SpecialsLeft = 0;
+    protected int SpecialsLeft = 0;
     public int CharacterSpecialAmmo = 1;
 
-    private Vector3 ForceToAdd;
+    protected Vector3 ForceToAdd;
     [HideInInspector]
     public Vector3 HorVelocityCheck;
 
     public float SpeedBoost = 20;
+    
+    protected Rigidbody currentRB;
 
-    //const float MaxSpeedForTest = 
-    Rigidbody currentRB;
-
-    float jumpholdtimer;
-    float jumpholdlimit = 0.25f;
-    Vector3 jumpAdd;
-    Vector3 jumpAddTo;
+    protected float jumpholdtimer;
+    protected float jumpholdlimit = 0.25f;
+    protected Vector3 jumpAdd;
+    protected Vector3 jumpAddTo;
 
     void Start()
     {
-        //Debug.Log("try to get camera");
-        //cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
-        //CharacterSelect = (Character)PlayerPrefs.GetInt("Character");
 
-    }
-
-    public void SetcTransform(Transform cam)
-    {
-        cTransform = cam;
     }
 
     void Update()
     {
-        //Debug.Log("maxspeedthisjump" + maxSpeedThisJump);
-
         if (!cTransform)
         {
             cTransform = GameObject.FindGameObjectWithTag("MainCamera").transform;
@@ -54,13 +43,6 @@ public class basicPlayer : MonoBehaviour {
 
         if (currentRB)
         {
-
-            //if (jumpholdtimer > 0)
-            //{
-            //    jumpholdtimer -= Time.deltaTime;
-            //    jumpAddTo += jumpAdd * Time.deltaTime / jumpholdlimit;
-            //    currentRB.velocity = new Vector3(currentRB.velocity.x, jumpAddTo.y, currentRB.velocity.z);
-            //}
 
             ////max speed check, and reduce horizontal velocity if needed;
             HorVelocityCheck = new Vector3(currentRB.velocity.x, 0, currentRB.velocity.z);
@@ -80,7 +62,12 @@ public class basicPlayer : MonoBehaviour {
         }
     }
 
-    public void moveForward(Rigidbody rb, float value)
+    public void SetcTransform(Transform cam)
+    {
+        cTransform = cam;
+    }
+
+    public virtual void moveForward(Rigidbody rb, float value)
     {
         if (currentRB)
         {
@@ -88,7 +75,7 @@ public class basicPlayer : MonoBehaviour {
         }
     }
 
-    public void moveRight(Rigidbody rb, float value)
+    public virtual void moveRight(Rigidbody rb, float value)
     {
         if (currentRB)
         {
@@ -96,13 +83,13 @@ public class basicPlayer : MonoBehaviour {
         }
     }
 
-    public void exitVehicle(Rigidbody rb, GameObject car, float holdTime)
+    public virtual void exitVehicle(Rigidbody rb, GameObject car, float holdTime)
     {
         currentRB = rb;
         Driving_Controls CarControl = car.GetComponent<Driving_Controls>();
 
         float CarSpeed = Mathf.Abs(CarControl.speed);
-        float SpeedBoost = (CarSpeed > (CarControl.maxSpeed * 0.8f)) ? 1.2f : .3f;
+        float SpeedBoost = (CarSpeed > (CarControl.maxSpeed * 0.8f)) ? 1.2f : .5f;
         maxSpeedThisJump = Mathf.Max(CarSpeed * SpeedBoost, 3f);
         float holdMult = Mathf.Max(holdTime / 1f, .5f);
 
@@ -117,12 +104,11 @@ public class basicPlayer : MonoBehaviour {
         jumpholdtimer = 0f;
     }
 
-    public void useSpecial(Rigidbody rb)
+    public virtual void useSpecial(Rigidbody rb)
     {
-        CharAnim.SetBool("Is_Special", true);
     }
 
-    private Vector3 calculateForward()
+    protected Vector3 calculateForward()
     {
         if (!cTransform)
         {
@@ -131,16 +117,15 @@ public class basicPlayer : MonoBehaviour {
         Vector3 forward = (this.transform.position - cTransform.position);
         forward.y = 0;
         forward = forward.normalized;
-        //Debug.Log("forward " + forward);
         return forward;
     }
 
-    public Vector3 GetHorVelocityCheck()
+    public virtual Vector3 GetHorVelocityCheck()
     {
         return HorVelocityCheck;
     }
 
-    public bool IsRocketMode()
+    public virtual bool IsRocketMode()
     {
         return false;
     }
@@ -150,17 +135,22 @@ public class basicPlayer : MonoBehaviour {
         return SpecialsLeft;
     }
 
-    public void EnterVehicleCleanUp()
+    public virtual void EnterVehicleCleanUp()
     {
     }
 
-    public int GetCharacter()
+    public virtual int GetCharacter()
     {
         return 0;
     }
 
-    public float LookY()
+    public virtual float LookY()
     {
         return 1f;
+    }
+
+    public virtual void EnterVehicleAnimation()
+    {
+
     }
 }
