@@ -94,7 +94,7 @@ public class basicPlayer : MonoBehaviour {
         StartCoroutine(jumpHoldForce());
     }
 
-    public void releaseJump(Rigidbody rb)
+    public virtual void releaseJump(Rigidbody rb)
     {
         jumphold = false;
     }
