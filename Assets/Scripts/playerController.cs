@@ -17,7 +17,6 @@ public class playerController : MonoBehaviour
     private float rotationX = 0F;
     private float rotationY = 0F;
     private Quaternion originalRotation;
-    private float jumpBuildTimer = float.MaxValue;
 
     public bool win;
 
@@ -207,17 +206,19 @@ public class playerController : MonoBehaviour
             //Debug.Log("zero h");
             thePlayer.moveRight(rb, 0);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+
+        //special
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && !grounded)
         {
-            Debug.Log("Space pressed");
-            if (jumpBuildTimer == float.MaxValue)
-            {
-                jumpBuildTimer = Time.unscaledTime;
-            }
+            thePlayer.useSpecial(rb);
+            nextCarTimer = 0;
+            // if player's special is double
+            if (thePlayer.GetSpecialsLeft() > 0)
+                soundEffects.PlayOneShot(doubleSound);
         }
-        if (Input.GetKeyUp(KeyCode.Space) && grounded || jumpBuildTimer < Time.unscaledTime - 1f || (car && car.transform.GetComponent<Driving_Controls>().crash.transform.GetComponent<crash>().crashed))
+
+        if (Input.GetKeyDown(KeyCode.Space) && grounded || (car && car.transform.GetComponent<Driving_Controls>().crash.transform.GetComponent<crash>().crashed))
         {
-            Debug.Log("Space released");
             if (rb == null)
             {
                 rb = gameObject.AddComponent<Rigidbody>();
@@ -225,8 +226,7 @@ public class playerController : MonoBehaviour
 
             soundEffects.PlayOneShot(jumpSound);
             car.GetComponent<Driving_Controls>().broke = true;
-            thePlayer.exitVehicle(rb, car, Time.unscaledTime - jumpBuildTimer);
-            jumpBuildTimer = float.MaxValue;
+            thePlayer.exitVehicle(rb, car);
 
             grounded = false;
             //GetComponent<MeshRenderer>().enabled = true;
@@ -241,17 +241,10 @@ public class playerController : MonoBehaviour
                 carkilled = true;
             }
             car = null;
-            thePlayer.releaseJump(rb);
         }
-
-        //special
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && !grounded)
+        if (Input.GetKeyUp(KeyCode.Space) && !grounded)
         {
-            thePlayer.useSpecial(rb);
-            nextCarTimer = 0;
-            // if player's special is double
-            if(thePlayer.GetSpecialsLeft() > 0)
-            soundEffects.PlayOneShot(doubleSound);
+            thePlayer.releaseJump(rb);
         }
     }
 

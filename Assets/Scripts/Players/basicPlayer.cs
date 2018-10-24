@@ -4,37 +4,26 @@ using UnityEngine;
 
 public class basicPlayer : MonoBehaviour {
 
-
-    public Transform cTransform;
-
-    //end character variables
     public Animator CharAnim;
-
     public float characterAcceleration = 20f;
-    protected float maxSpeedThisJump;
-
-    protected int SpecialsLeft = 0;
-    public int CharacterSpecialAmmo = 1;
-
-    protected Vector3 ForceToAdd;
-    [HideInInspector]
-    public Vector3 HorVelocityCheck;
-
     public float SpeedBoost = 20;
-    
-    protected Rigidbody currentRB;
 
-    protected float jumpholdtimer;
-    protected float jumpholdlimit = 0.25f;
-    protected Vector3 jumpAdd;
-    protected Vector3 jumpAddTo;
+    protected Transform cTransform;
+    protected float maxSpeedThisJump;
+    protected Rigidbody currentRB;
+    protected bool jumphold;
+    protected Vector3 HorVelocityCheck;
+
+    // basic player doesn't use these variables but all characters will use them so storing them here
+    public int CharacterSpecialAmmo = 1;
+    protected int SpecialsLeft = 0;
 
     void Start()
     {
 
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!cTransform)
         {
@@ -83,7 +72,7 @@ public class basicPlayer : MonoBehaviour {
         }
     }
 
-    public virtual void exitVehicle(Rigidbody rb, GameObject car, float holdTime)
+    public virtual void exitVehicle(Rigidbody rb, GameObject car)
     {
         currentRB = rb;
         Driving_Controls CarControl = car.GetComponent<Driving_Controls>();
@@ -91,19 +80,26 @@ public class basicPlayer : MonoBehaviour {
         float CarSpeed = Mathf.Abs(CarControl.speed);
         float SpeedBoost = (CarSpeed > (CarControl.maxSpeed * 0.8f)) ? 1.2f : .5f;
         maxSpeedThisJump = Mathf.Max(CarSpeed * SpeedBoost, 3f);
-        float holdMult = Mathf.Max(holdTime / 1f, .5f);
 
         Vector3 carVeloctiy = car.transform.GetComponent<Rigidbody>().velocity;
         carVeloctiy.y = 0f;
+
+        //use car velocity to calculate player velocity
         currentRB.velocity = carVeloctiy * SpeedBoost;
-        currentRB.AddForce(Vector3.up * 1000f * holdMult);
+        //jump force
+        currentRB.AddForce(Vector3.up * 500f);
+
+        //the player can jump higher if they hold jump while leaving the car
+        jumphold = true;
+        StartCoroutine(jumpHoldForce());
     }
 
     public void releaseJump(Rigidbody rb)
     {
-        jumpholdtimer = 0f;
+        jumphold = false;
     }
 
+    //function meant to be overridden by all child character scripts
     public virtual void useSpecial(Rigidbody rb)
     {
     }
@@ -152,5 +148,17 @@ public class basicPlayer : MonoBehaviour {
     public virtual void EnterVehicleAnimation()
     {
 
+    }
+
+    // coroutine to continue adding an upward force the longer the player holds space after leaving car
+    protected IEnumerator jumpHoldForce()
+    {
+        float jumpForce = 80f;
+        if (jumphold && currentRB != null && jumpForce > 1f)
+        {
+            jumpForce = Mathf.Lerp(jumpForce, 0, .1f);
+            currentRB.AddForce(Vector3.up * jumpForce);
+            yield return null;
+        }
     }
 }
