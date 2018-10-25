@@ -141,7 +141,7 @@ public class Character_Firework : basicPlayer
 
     public override void useSpecial(Rigidbody rb)
     {
-
+        Debug.Log("USING FIREWORKS");
         CharAnim.SetBool("Is_Special", true);
         if (SpecialsLeft > 0)
         {

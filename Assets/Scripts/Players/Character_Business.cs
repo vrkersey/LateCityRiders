@@ -24,6 +24,7 @@ public class Character_Business : basicPlayer
     // function so we do what we need without calling back to base
     public override void useSpecial(Rigidbody rb)
     {
+        Debug.Log("USING BUSINESS CHARACTER!!!");
 
         CharAnim.SetBool("Is_Special", true);
         if (SpecialsLeft > 0)

@@ -27,6 +27,7 @@ public class Character_Karate : basicPlayer
 
     public override void useSpecial(Rigidbody rb)
     {
+        Debug.Log("USING KARATE");
         CharAnim.SetBool("Is_Special", true);
         if (SpecialsLeft > 0)
         {

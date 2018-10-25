@@ -56,10 +56,12 @@ public class playerController : MonoBehaviour
     float nextCarTimer;
     public basicPlayer thePlayer;
 
-    public  bool IsKilled;
+    public bool IsKilled;
 
     float deathcammultiplier;
     bool carkilled;
+
+    public GameObject Parameter;
 
     // Use this for initialization
     void Start()
@@ -110,15 +112,15 @@ public class playerController : MonoBehaviour
     {
         if (win)
         {
-            GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color = new Color(GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.r, GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.g, GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.b, GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.a +Time.deltaTime /3);
+            GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color = new Color(GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.r, GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.g, GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.b, GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.a + Time.deltaTime / 3);
         }
 
-        if(!IsKilled && carkilled && !inCar)
+        if (!IsKilled && carkilled && !inCar)
         {
             IsKilled = true;
             soundEffects.PlayOneShot(killSound);
             StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity, Vector3.up * 1f));
-            
+
         }
 
 
@@ -131,18 +133,18 @@ public class playerController : MonoBehaviour
             SpawnedPlayerGroup.transform.position = transform.position;
             if (rb)
             {
-                if(thePlayer.LookY() == -1)
+                if (thePlayer.LookY() == -1)
                 {
-                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y -35, rb.velocity.z) + transform.forward * 0.5f);
+                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y - 35, rb.velocity.z) + transform.forward * 0.5f);
                 }
                 else
                 {
-                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y  * thePlayer.LookY(), rb.velocity.z) + transform.forward * 0.5f);
+                    SpawnedPlayerGroup.transform.LookAt(SpawnedPlayerGroup.transform.position + new Vector3(rb.velocity.x, rb.velocity.y * thePlayer.LookY(), rb.velocity.z) + transform.forward * 0.5f);
 
                 }
             }
         }
-        
+
 
         if (!inCar && !IsKilled)
         {
@@ -156,17 +158,17 @@ public class playerController : MonoBehaviour
                 transform.position = car.transform.position + car.GetComponent<Driving_Controls>().PlayerPositionInCar;
                 carSound.UnPause();
             }
-            
+
             DropShadow.SetActive(false);
             if (IsKilled)
             {
                 //Debug.Log("lloking");
                 cameraSpawned.transform.LookAt(RagdollPelvis.transform);
                 deathcammultiplier += Time.deltaTime;
-                cameraSpawned.transform.position += ((RagdollPelvis.transform.position + Vector3.up * deathcammultiplier) - cameraSpawned.transform.position).normalized * ((1f * ((RagdollPelvis.transform.position + Vector3.up * deathcammultiplier) - cameraSpawned.transform.position).magnitude) - 2f) * deathcammultiplier * Time.deltaTime ;
+                cameraSpawned.transform.position += ((RagdollPelvis.transform.position + Vector3.up * deathcammultiplier) - cameraSpawned.transform.position).normalized * ((1f * ((RagdollPelvis.transform.position + Vector3.up * deathcammultiplier) - cameraSpawned.transform.position).magnitude) - 2f) * deathcammultiplier * Time.deltaTime;
             }
         }
-        
+
     }
 
     private void Keyboard_Input()
@@ -205,6 +207,13 @@ public class playerController : MonoBehaviour
         {
             //Debug.Log("zero h");
             thePlayer.moveRight(rb, 0);
+        }
+
+        //Expand reach to enter car.
+        if (Input.GetKey(KeyCode.R) && !inCar) 
+        {
+            Parameter.SetActive(true);
+            Parameter.GetComponent<ParameterRange>().StartGrab();
         }
 
         //special
@@ -311,30 +320,30 @@ public class playerController : MonoBehaviour
 
     IEnumerator WaitToRagdoll(Vector3 impactVelocity, Vector3 hitNormal)
     {
-        
+
         PlayerMesh.SetActive(false);
         DropShadow.SetActive(false);
         RagdollPrefab.SetActive(true);
         RagdollPrefab.transform.parent = null;
         //if (hitNormal.magnitude != 0)
         //{
-            RagdollPrefab.transform.position += hitNormal * 2 - Vector3.up / 2;
-            //Debug.Log(impactVelocity);
-            RagdollPelvis.velocity = (new Vector3(impactVelocity.x, 0, impactVelocity.z) + (hitNormal * ((impactVelocity.magnitude / 4) + 3f))) * 4f;
+        RagdollPrefab.transform.position += hitNormal * 2 - Vector3.up / 2;
+        //Debug.Log(impactVelocity);
+        RagdollPelvis.velocity = (new Vector3(impactVelocity.x, 0, impactVelocity.z) + (hitNormal * ((impactVelocity.magnitude / 4) + 3f))) * 4f;
         //}
         //else
         //{/
         //    RagdollPrefab.transform.position += Vector3.up * 2;
         //}
-        
+
         cameraSpawned.transform.parent = null;
 
         Debug.Log("death " + Mathf.Min(3f + impactVelocity.magnitude / 15, 10f));
-        yield return new WaitForSeconds(Mathf.Min( 3f + impactVelocity.magnitude/15, 10f));
+        yield return new WaitForSeconds(Mathf.Min(3f + impactVelocity.magnitude / 15, 10f));
         //if(!win || win && GameObject.FindGameObjectWithTag("win").transform.GetComponent<Image>().color.a >= 255)
         SceneManager.LoadScene("MainMenu");
     }
-    
+
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Kill Zone") && !IsKilled && !win)
@@ -343,7 +352,7 @@ public class playerController : MonoBehaviour
             IsKilled = true;
             soundEffects.PlayOneShot(killSound);
             StartCoroutine(WaitToRagdoll(player.GetComponent<Rigidbody>().velocity, other.contacts[0].normal));
-            
+
         }
 
         //NEW: Ends the level with a success. For prototype it simply restarts stage.
@@ -358,14 +367,17 @@ public class playerController : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        
-
         //if (other.gameObject.CompareTag("Car") && !inCar && nextCarTimer <= 0f)
-        if (other.gameObject.CompareTag("Car") && !inCar && player.transform.GetComponent<Rigidbody>().velocity.y <0)
+        if (other.gameObject.CompareTag("Car") && !inCar && player.transform.GetComponent<Rigidbody>().velocity.y < 0)
         {
-            EnterCar(other, false);
-            thePlayer.EnterVehicleAnimation();
+            BeginEntrance(other);
         }
+    }
+
+    public void BeginEntrance(Collider other)
+    {
+        EnterCar(other, false);
+        thePlayer.EnterVehicleAnimation();
     }
 
     void EnterCar(Collider other, bool first)
